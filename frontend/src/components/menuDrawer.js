@@ -33,11 +33,11 @@ export default function TemporaryDrawer() {
     try {
       const user = getCurrentUser();
       console.log(user);
-      if(!user) window.location = "/unauthorized";
+      if(!user) window.location = "page/unauthorized";
       else
       setUser(user);
     } catch (error) {
-      window.location = "/unauthorized";
+      window.location = "page/unauthorized";
     }
   }, []);
 
@@ -60,7 +60,7 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        <Link className="link" to="/users">
+        <Link className="link" to="page/users">
           <ListItem button key={"Vartotojai"} >
             <ListItemIcon>
               <PeopleAltIcon />
@@ -69,7 +69,7 @@ export default function TemporaryDrawer() {
           </ListItem>
         </Link>
 
-        <Link className="link" to="/books">
+        <Link className="link" to="page/books">
           <ListItem button key={"Knygos"} >
             <ListItemIcon>
               <MenuBookIcon />
@@ -78,7 +78,7 @@ export default function TemporaryDrawer() {
           </ListItem>
         </Link>
 
-        <Link className="link" to="/bookscheckincheckout">
+        <Link className="link" to="page/bookscheckincheckout">
           <ListItem button key={"Knygų išdavimas"}>
             <ListItemIcon>
               <AutoStoriesIcon />

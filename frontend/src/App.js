@@ -17,9 +17,9 @@ export default function App() {
          <FlashMessage/>
         <Routes>
           <Route path="/" element={<SignIn />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/books" element={<Books />} />
-          <Route path="/bookscheckincheckout" element={<BooksCkeckOutCheckIn />} />
+          <Route path="page/users" element={<Users />} />
+          <Route path="page/books" element={<Books />} />
+          <Route path="page/bookscheckincheckout" element={<BooksCkeckOutCheckIn />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
