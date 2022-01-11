@@ -1,0 +1,116 @@
+html, body{
+  z-index: -100;
+  background-color: rgba(0, 0, 0, 0.009);
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  font-family: '-apple-system',
+  'BlinkMacSystemFont',
+  '"Segoe UI"',
+  'Roboto',
+  '"Helvetica Neue"',
+  'Arial',
+  'sans-serif',
+  '"Apple Color Emoji"',
+  '"Segoe UI Emoji"',
+  '"Segoe UI Symbol"';
+
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+}
+
+.header {
+  height: 80px;
+  background-color: rgb(37, 37, 37);
+}
+
+#menu-btn {
+  color: black;
+  background-color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  transform: translateY(-50%);
+}
+
+#menu-btn:hover {
+  background-color: #707070;
+  color: white;
+}
+
+.menu-icon{
+  padding-right: 10px;
+  font-size: 50px;
+}
+
+#logo-img{
+  color: white;
+  position: absolute;
+  right: 10px;
+  height: 80px;
+}
+
+.userTable{
+  margin: 50px auto;
+}
+
+.addUser-btn{
+  position: absolute !important;
+  right: 2.5%;
+  top: 120px;
+}
+
+.addUserBox{
+  margin: 0;
+  z-index: 2;
+  position: absolute;
+  width: 100%;
+  height: 100%;  
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.466);
+}
+
+.userAddForm{
+  margin: 100px auto;
+  width: 600px;
+  height: 680px;
+  background-color: rgb(255, 255, 255);
+  padding: 15px;
+ 
+}
+
+.addUserContainer{
+  background-color: rgba(121, 121, 121, 0.514);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  z-index: 2;
+
+}
+
+
+.alert {
+  width: 30%;
+  position: fixed;
+  margin: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+}
+
+.userName{
+  color: white;
+  position: absolute;
+  margin-top: 27px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.centerHeader{
+  text-align: center;
+}
