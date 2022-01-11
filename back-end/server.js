@@ -28,8 +28,8 @@ const connectDB = async () => {
 connectDB();
 //seed(1000);
 //seedbook(1000);
-app.use("api/users", require("./routes/users"));
-app.use("api/books", require("./routes/books"));
+app.use("/api/users", require("./routes/users"));
+app.use("/api/books", require("./routes/books"));
 
 // deployment
 
