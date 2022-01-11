@@ -20,6 +20,7 @@ import Checkbox from "@mui/material/Checkbox";
 import InfoAboutBookBox from "../books/infoAboutBook";
 import DeleteBookConfirmation from "../books/deleteBookConfirmation";
 import UpdateBookForm from '../books/updateBookForm';
+import { BooksCartContext } from "../../context/booksCartContext";
 
 const columns = [
   {
@@ -40,6 +41,8 @@ const columns = [
 ];
 
 const BooksTable = forwardRef((props, ref) => {
+
+  const booksCartContext = useContext(BooksCartContext);
 
   const [showBookInfo, setshowBookInfo] = useState(false);
   const [bookInfo, setBookInfo] = useState({
@@ -124,10 +127,10 @@ const BooksTable = forwardRef((props, ref) => {
                             
                                   <Button
                                     onClick={() =>
-                                      alert("clicked")
+                                      booksCartContext.handleDeleteBooksCartContext(row.bookID)
                                     }
                                   >
-                                    Pirdėti
+                                    Pašalinti
                                   </Button>
                                 </>
                               

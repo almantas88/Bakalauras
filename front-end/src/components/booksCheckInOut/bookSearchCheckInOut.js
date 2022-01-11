@@ -6,11 +6,14 @@ import Grid from "@mui/material/Grid";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { BooksContext } from "../../context/booksContext";
+import { BooksCartContext } from "../../context/booksCartContext";
 import BooksTable from "./booksCheckOutTable";
-import BooksCart from "./booksCart";
+import BooksCart from "./booksCartTable";
+import SendIcon from '@mui/icons-material/Send';
 
 export default function BookSearch(props) {
   const booksContext = useContext(BooksContext);
+  const booksCartContext = useContext(BooksCartContext)
 
   const [allRowsForShowing, setAllRowsForShowing] = useState(props.booksList);
 
@@ -107,7 +110,7 @@ export default function BookSearch(props) {
             />
           </Grid>
 
-          <Grid item xs={2}>
+          <Grid item xs={2.5}>
             <Button
               sx={{
                 height: "100%",
@@ -150,7 +153,6 @@ export default function BookSearch(props) {
             <h2>Knygos:</h2>
             <BooksTable
               ref={childRef}
-              allRows={booksContext.allBooksList}
               allRowsForShowing={allRowsForShowing}
               handleShowUserInfo={props.handleChange}
               isLoading={props.isLoading}
@@ -160,8 +162,7 @@ export default function BookSearch(props) {
             <h2>Krepšelis:</h2>
             <BooksCart
               ref={childRef}
-              allRows={booksContext.allBooksList}
-              allRowsForShowing={allRowsForShowing}
+              allRowsForShowing={booksCartContext.allBooksCartList}
               handleShowUserInfo={props.handleChange}
               isLoading={props.isLoading}
             />
@@ -174,7 +175,7 @@ export default function BookSearch(props) {
           justifyContent="flex-end"
           alignItems="center"
         >
-          <Button size="large" variant="contained">Išduoti knygas</Button>
+          <Button endIcon={<SendIcon />} size="large" variant="contained">Išduoti knygas</Button>
         </Grid>
       </Container>
     </>

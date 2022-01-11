@@ -4,13 +4,16 @@ import App from "./App";
 import { MessageProvider } from "./context/messageContext";
 import { UsersProvider } from "./context/usersContext";
 import { BooksProvider } from "./context/booksContext";
+import { BooksCartProvider } from "./context/booksCartContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <MessageProvider>
       <UsersProvider>
         <BooksProvider>
-          <App />
+          <BooksCartProvider>
+            <App />
+          </BooksCartProvider>
         </BooksProvider>
       </UsersProvider>
     </MessageProvider>
