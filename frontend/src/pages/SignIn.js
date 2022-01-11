@@ -33,7 +33,7 @@ export default function SignInSide() {
       handleMessageShow("Pavyko prisijungti", "success");
       setTimeout(() => {
         closeError();
-        window.location = "page/users";
+        window.location = "/users";
       }, 500);
     } catch (error) {
       handleMessageShow(error.response.data.msg, "error");
