@@ -8,9 +8,6 @@
 # testing
 /coverage
 
-# production
-/front-end/build
-/front-end/node_modules
 
 
 # misc
