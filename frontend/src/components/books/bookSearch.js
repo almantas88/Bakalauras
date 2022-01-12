@@ -75,7 +75,7 @@ export default function BookSearch(props) {
   return (
     <>
       <Container sx={{ overflow: "hidden", width: "95%" }}>
-        <h2>Paieška:</h2>
+        <h3>Paieška:</h3>
         <Grid container spacing={2}>
           <Grid item xs={4}>
             <TextField

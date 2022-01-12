@@ -9,11 +9,12 @@ import { BooksContext } from "../../context/booksContext";
 import { BooksCartContext } from "../../context/booksCartContext";
 import BooksTable from "./booksCheckOutTable";
 import BooksCart from "./booksCartTable";
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 export default function BookSearch(props) {
   const booksContext = useContext(BooksContext);
-  const booksCartContext = useContext(BooksCartContext)
+  const booksCartContext = useContext(BooksCartContext);
 
   const [allRowsForShowing, setAllRowsForShowing] = useState(props.booksList);
 
@@ -63,6 +64,10 @@ export default function BookSearch(props) {
     setSearchTextTitle(text);
   };
 
+  const handleSelectOtherUser = () => {
+    booksCartContext.setCurrentUserCart({});
+  };
+
   useEffect(() => {
     booksContext.setAllBooksList(booksContext.allBooksList);
     setAllRowsForShowing(booksContext.allBooksList);
@@ -71,7 +76,7 @@ export default function BookSearch(props) {
   return (
     <>
       <Container sx={{ overflow: "hidden", width: "95%" }}>
-        <h2>Paieška:</h2>
+        <h3>Paieška:</h3>
         <Grid container spacing={1}>
           <Grid item xs={2.5}>
             <TextField
@@ -150,7 +155,7 @@ export default function BookSearch(props) {
       <Container maxWidth="fixed" sx={{ overflow: "hidden", width: "100%" }}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={12} lg={6}>
-            <h2>Knygos:</h2>
+            <h3>Knygos:</h3>
             <BooksTable
               ref={childRef}
               allRowsForShowing={allRowsForShowing}
@@ -159,7 +164,7 @@ export default function BookSearch(props) {
             />
           </Grid>
           <Grid item xs={12} md={12} lg={6}>
-            <h2>Krepšelis:</h2>
+            <h3>Krepšelis:</h3>
             <BooksCart
               ref={childRef}
               allRowsForShowing={booksCartContext.allBooksCartList}
@@ -168,16 +173,40 @@ export default function BookSearch(props) {
             />
           </Grid>
         </Grid>
-        <Grid
-        sx= {{margin: "20px 0px"}}
-          container
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
-        >
-          <Button endIcon={<SendIcon />} size="large" variant="contained">Išduoti knygas</Button>
-        </Grid>
       </Container>
+
+        <Grid container spacing={2} sx={{margin: "10px auto",width: "97%"}}>
+          <Grid
+            xs={6}
+            sx={{ margin: "20px 0px" }}
+            container
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="center"
+          >
+            <Button
+              size="large"
+              startIcon={<ArrowBackIcon />}
+              variant="contained"
+              onClick={() => { handleSelectOtherUser()}}
+            >
+              Pasirinkti kitą vartotoją
+            </Button>
+          </Grid>
+          <Grid
+            xs={6}
+            sx={{ margin: "20px 0px" }}
+            container
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
+          >
+            <Button endIcon={<SendIcon />} size="large" variant="contained">
+              Atnaujinti vartotojo knygas
+            </Button>
+          </Grid>
+        </Grid>
+
     </>
   );
 }

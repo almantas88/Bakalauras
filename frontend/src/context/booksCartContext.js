@@ -7,6 +7,7 @@ export const BooksCartProvider = (props) => {
     useContext(MessageContext);
 
   const [allBooksCartList, setAllBooksCartList] = useState([]); //To store book objects
+  const [currentUserCart, setCurrentUserCart] = useState({});
 
   const handleDeleteBooksCartContext = (bookID) => {
     const bookListAfterDeletion = allBooksCartList.filter(
@@ -37,6 +38,8 @@ export const BooksCartProvider = (props) => {
         setAllBooksCartList,
         handleDeleteBooksCartContext,
         handleAddBooksCartContext,
+        currentUserCart,
+        setCurrentUserCart,
       }}
     >
       {props.children}

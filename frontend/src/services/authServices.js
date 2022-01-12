@@ -1,6 +1,6 @@
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-const apiUrl = process.env.REACT_APP_API_URL || "https://bakalauras-biblioteka.herokuapp.com/api";
+const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 export async function login(data) {
 
