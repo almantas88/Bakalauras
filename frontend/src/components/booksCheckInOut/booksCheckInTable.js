@@ -14,22 +14,23 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
-import InfoAboutUserBox from "../users/infoAboutUser";
 import CircularProgress from "@mui/material/CircularProgress";
 import { UsersContext } from "../../context/usersContext";
+import Checkbox from "@mui/material/Checkbox";
+import InfoAboutBookBox from "../books/infoAboutBook";
+import DeleteBookConfirmation from "../books/deleteBookConfirmation";
+import UpdateBookForm from '../books/updateBookForm';
 import { BooksCartContext } from "../../context/booksCartContext";
-import SendIcon from "@mui/icons-material/Send";
 
 const columns = [
   {
-    id: "cardID",
-    label: "Kortelės ID",
+    id: "bookID",
+    label: "Knygos ID",
     width: 50,
     minWidth: 50,
   },
-  { id: "firstName", label: "Vardas", width: 150, minWidth: 150 },
-  { id: "lastName", label: "Pavardė", width: 150, minWidth: 150 },
-  { id: "grade", label: "Klasė", width: 10, minWidth: 10 },
+  { id: "title", label: "Pavadinimas", width: 150, minWidth: 150 },
+  { id: "author", label: "Autorius", width: 150, minWidth: 150 },
   {
     id: "actions",
     label: "Veiksmai",
@@ -39,21 +40,28 @@ const columns = [
   },
 ];
 
-const UsersTable = forwardRef((props, ref) => {
+const BooksTable = forwardRef((props, ref) => {
 
   const booksCartContext = useContext(BooksCartContext);
+
+  const [showBookInfo, setshowBookInfo] = useState(false);
+  const [bookInfo, setBookInfo] = useState({
+    bookID: "",
+    title: "",
+    author: "",
+  });
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [showUserInfo, setshowUserInfo] = useState(false);
-  const [showUpdateUserForm, setShowUpdateUserForm] = useState(false);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [userInfo, setUserInfo] = useState({
-    id: "",
-    firstName: "",
-    lastName: "",
-  });
+  const handleShowBookInfo = (row) => {
+    setBookInfo({
+      bookID: row.bookID,
+      title: row.title,
+      author: row.author,
+    });
+    showBookInfo ? setshowBookInfo(false) : setshowBookInfo(true);
+  };
 
   useImperativeHandle(ref, () => ({
     setToFirstPage,
@@ -68,48 +76,20 @@ const UsersTable = forwardRef((props, ref) => {
     setPage(0);
   };
 
-  const handleShowUserInfo = (row) => {
-    setUserInfo({
-      cardID: row.cardID,
-      firstName: row.firstName,
-      lastName: row.lastName,
-    });
-    console.log(userInfo);
-    showUserInfo ? setshowUserInfo(false) : setshowUserInfo(true);
-  };
-
-
   const setToFirstPage = () => {
     setPage(0);
   };
 
-  const handleUserSelectCheckOut = (values) => {
-    booksCartContext.setAction("CHECKOUT")
-    booksCartContext.setCurrentUser({
-      firstName: values.firstName,
-    lastName: values.lastName,
-    cardID: values.cardID,
-    grade: values.grade
-    })
-  }
 
-  const handleUserSelectCheckIn = (values) => {
-    booksCartContext.setAction("CHECKIN")
-    booksCartContext.setCurrentUser({
-      firstName: values.firstName,
-    lastName: values.lastName,
-    cardID: values.cardID,
-    grade: values.grade
-    })
-  }
+
 
   return (
     <>
       {props.isLoading ? (
-        <CircularProgress sx={{ display: "flex", margin: "130px auto" }} />
+        <CircularProgress sx={{ display: "flex", margin: "100px auto" }} />
       ) : (
-        <Paper className="userTable" sx={{ width: "95%", overflow: "hidden" }}>
-          <TableContainer sx={{ maxHeight: 430 }}>
+        <Paper sx={{ width: "100%", overflow: "hidden", margin: "0px auto" }}>
+          <TableContainer sx={{ maxHeight: 400 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
@@ -142,26 +122,20 @@ const UsersTable = forwardRef((props, ref) => {
                               {column.id === "actions" ? (
                                 <>
                                   <Button
-                                    onClick={() => handleShowUserInfo(row)}
+                                    onClick={() => handleShowBookInfo(row)}
                                   >
                                     Informacija
                                   </Button>
-                                  <Button endIcon={<SendIcon />}
+                            
+                                  <Button
                                     onClick={() =>
-                                     handleUserSelectCheckOut(row)
+                                      booksCartContext.handleAddBooksCartContext(row)
                                     }
                                   >
-                                    Išduoti knygas
-                                  </Button>
-
-                                  <Button endIcon={<SendIcon />}
-                                    onClick={() =>
-                                      handleUserSelectCheckIn(row)
-                                    }
-                                  >
-                                    Gražinti knygas
+                                    Gražinti
                                   </Button>
                                 </>
+                              
                               ) : column.format && typeof value === "number" ? (
                                 column.format(value)
                               ) : (
@@ -187,16 +161,15 @@ const UsersTable = forwardRef((props, ref) => {
           />
         </Paper>
       )}
-      {showUserInfo ? (
-        <InfoAboutUserBox
-          userInfo={userInfo}
-          handleChange={handleShowUserInfo}
+      {showBookInfo ? (
+        <InfoAboutBookBox
+          bookInfo={bookInfo}
+          handleChange={handleShowBookInfo}
         />
       ) : null}
 
-    
     </>
   );
 });
 
-export default memo(UsersTable);
+export default memo(BooksTable);

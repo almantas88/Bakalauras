@@ -7,7 +7,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import { BooksContext } from "../../context/booksContext";
 import { BooksCartContext } from "../../context/booksCartContext";
-import BooksTable from "./booksCheckOutTable";
+import BooksTable from "./booksCheckInTable";
 import BooksCart from "./booksCartTable";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -65,7 +65,7 @@ export default function BookSearch(props) {
   };
 
   const handleSelectOtherUser = () => {
-    booksCartContext.setCurrentUserCart({});
+    booksCartContext.setCurrentUser({});
   };
 
   useEffect(() => {
@@ -152,28 +152,17 @@ export default function BookSearch(props) {
         </Grid>
       </Container>
 
-      <Container maxWidth="fixed" sx={{ overflow: "hidden", width: "100%" }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={12} lg={6}>
-            <h3>Knygos:</h3>
+
+      <Grid container spacing={2} sx={{margin: "10px auto",width: "95%"}}>
+            <h3>Vartotojo knygos:</h3>
             <BooksTable
               ref={childRef}
               allRowsForShowing={allRowsForShowing}
               handleShowUserInfo={props.handleChange}
               isLoading={props.isLoading}
             />
-          </Grid>
-          <Grid item xs={12} md={12} lg={6}>
-            <h3>Krepšelis:</h3>
-            <BooksCart
-              ref={childRef}
-              allRowsForShowing={booksCartContext.allBooksCartList}
-              handleShowUserInfo={props.handleChange}
-              isLoading={props.isLoading}
-            />
-          </Grid>
-        </Grid>
-      </Container>
+                </Grid>
+
 
         <Grid container spacing={2} sx={{margin: "10px auto",width: "97%"}}>
           <Grid

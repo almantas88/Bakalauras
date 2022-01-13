@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import MenuDrawer from "../components/menuDrawer";
 import { Button } from "@mui/material";
-import BookSearch from "../components/booksCheckInOut/bookSearchCheckInOut";
+import BookSearchCheckOut from "../components/booksCheckInOut/bookSearchCheckOut";
+import BookSearchCheckIn from "../components/booksCheckInOut/bookSearchCheckIn";
 import { BooksContext } from "../context/booksContext";
 import { getCurrentUser } from "../services/authServices";
 import AddBookForm from "../components/books/addBookForm";
@@ -10,7 +11,6 @@ import { getAllUsers } from "../services/userServices";
 import { BooksCartContext } from "../context/booksCartContext";
 import UsersSearch from "../components/booksCheckInOut/usersSearchCheckInOut";
 import { UsersContext } from "../context/usersContext";
-
 
 export default function Books() {
   const booksContext = useContext(BooksContext);
@@ -61,40 +61,47 @@ export default function Books() {
     setIsLoading(false);
   }
 
-  console.log(booksCartContext.currentUserCart);
+  console.log(booksCartContext.currentUser);
+
+  var actionForChecking;
+  if(booksCartContext.action === "CHECKOUT"){
+    actionForChecking = <BookSearchCheckOut
+    booksList={booksContext.allBooksList}
+    isLoading={isLoading}
+  ></BookSearchCheckOut>
+  }
+  else if(booksCartContext.action === "CHECKIN"){
+    actionForChecking = <BookSearchCheckIn
+          booksList={booksContext.allBooksList}
+          isLoading={isLoading}
+        ></BookSearchCheckIn>
+  }
 
   return (
     <div>
       <MenuDrawer />
 
-      {booksCartContext.currentUserCart &&
-      Object.keys(booksCartContext.currentUserCart).length === 0 &&
-      Object.getPrototypeOf(booksCartContext.currentUserCart) ===
+      {booksCartContext.currentUser &&
+      Object.keys(booksCartContext.currentUser).length === 0 &&
+      Object.getPrototypeOf(booksCartContext.currentUser) ===
         Object.prototype ? (
         <h1 className="centerHeader">Knygų išdavmas/gražinimas</h1>
       ) : (
         <>
           <h1 className="centerHeader">Knygų išdavmas/gražinimas</h1>
-          <h2 className="centerHeader">{`${booksCartContext.currentUserCart.firstName} ${booksCartContext.currentUserCart.lastName}, ${booksCartContext.currentUserCart.grade} klasė`}</h2>
-
-          
+          <h2 className="centerHeader">{`${booksCartContext.currentUser.firstName} ${booksCartContext.currentUser.lastName}, ${booksCartContext.currentUser.grade} klasė`}</h2>
         </>
       )}
 
-      {booksCartContext.currentUserCart &&
-      Object.keys(booksCartContext.currentUserCart).length === 0 &&
-      Object.getPrototypeOf(booksCartContext.currentUserCart) ===
+      {booksCartContext.currentUser &&
+      Object.keys(booksCartContext.currentUser).length === 0 &&
+      Object.getPrototypeOf(booksCartContext.currentUser) ===
         Object.prototype ? (
         <UsersSearch
           usersList={usersContext.allUserslist}
           isLoading={isLoading}
         ></UsersSearch>
-      ) : (
-        <BookSearch
-          booksList={booksContext.allBooksList}
-          isLoading={isLoading}
-        ></BookSearch>
-      )}
+      ) : actionForChecking}
     </div>
   );
 }

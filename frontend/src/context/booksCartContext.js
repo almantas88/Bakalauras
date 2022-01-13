@@ -6,8 +6,9 @@ export const BooksCartProvider = (props) => {
   const [message, severity, showMessageBox, handleMessageShow, closeError] =
     useContext(MessageContext);
 
+  const [action, setAction] = useState('');
   const [allBooksCartList, setAllBooksCartList] = useState([]); //To store book objects
-  const [currentUserCart, setCurrentUserCart] = useState({});
+  const [currentUser, setCurrentUser] = useState({});
 
   const handleDeleteBooksCartContext = (bookID) => {
     const bookListAfterDeletion = allBooksCartList.filter(
@@ -38,8 +39,9 @@ export const BooksCartProvider = (props) => {
         setAllBooksCartList,
         handleDeleteBooksCartContext,
         handleAddBooksCartContext,
-        currentUserCart,
-        setCurrentUserCart,
+        currentUser,
+        setCurrentUser,
+        action, setAction
       }}
     >
       {props.children}
