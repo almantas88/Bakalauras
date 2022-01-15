@@ -64,17 +64,20 @@ export default function Books() {
   console.log(booksCartContext.currentUser);
 
   var actionForChecking;
-  if(booksCartContext.action === "CHECKOUT"){
-    actionForChecking = <BookSearchCheckOut
-    booksList={booksContext.allBooksList}
-    isLoading={isLoading}
-  ></BookSearchCheckOut>
-  }
-  else if(booksCartContext.action === "CHECKIN"){
-    actionForChecking = <BookSearchCheckIn
-          booksList={booksContext.allBooksList}
-          isLoading={isLoading}
-        ></BookSearchCheckIn>
+  if (booksCartContext.action === "CHECKOUT") {
+    actionForChecking = (
+      <BookSearchCheckOut
+        booksList={booksContext.allBooksList}
+        isLoading={isLoading}
+      ></BookSearchCheckOut>
+    );
+  } else if (booksCartContext.action === "CHECKIN") {
+    actionForChecking = (
+      <BookSearchCheckIn
+        booksList={booksContext.allBooksList}
+        isLoading={isLoading}
+      ></BookSearchCheckIn>
+    );
   }
 
   return (
@@ -101,7 +104,9 @@ export default function Books() {
           usersList={usersContext.allUserslist}
           isLoading={isLoading}
         ></UsersSearch>
-      ) : actionForChecking}
+      ) : (
+        actionForChecking
+      )}
     </div>
   );
 }

@@ -6,6 +6,8 @@ firstName: { type: String, required: true },
 lastName: { type: String, required: true},
 cardID:  { type: String, required: true, unique: true},
 role: { type: String, default: "STUDENT"},
-grade: { type: String, required: true}
+grade: { type: String, required: true},
+books: [{type: mongoose.Schema.Types.ObjectId, ref: 'book', unique: true}]
 });
-module.exports = User = mongoose.model("user", userSchema);
+var User = mongoose.model("user", userSchema);
+module.exports = User;

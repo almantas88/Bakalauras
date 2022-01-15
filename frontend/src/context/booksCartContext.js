@@ -1,5 +1,6 @@
 import { createContext, useState, useContext } from "react";
 import { MessageContext } from "./messageContext";
+import {retrieveCurrentUserBooks} from "../services/checkOutInServices";
 export const BooksCartContext = createContext([]);
 
 export const BooksCartProvider = (props) => {
@@ -7,18 +8,29 @@ export const BooksCartProvider = (props) => {
     useContext(MessageContext);
 
   const [action, setAction] = useState('');
-  const [allBooksCartList, setAllBooksCartList] = useState([]); //To store book objects
+  const [allBooksCartList, setAllBooksCartList] = useState([]); //To store book objectsID
+  const [allBooksCartListID, setAllBooksCartListID] = useState([]); //To store book objectsID
   const [currentUser, setCurrentUser] = useState({});
+  const [currentUserBookList, setCurrentUserBookList] = useState([]);
 
-  const handleDeleteBooksCartContext = (bookID) => {
+  const handleDeleteBooksCartContext = (values) => {
     const bookListAfterDeletion = allBooksCartList.filter(
-      (element) => element.bookID !== bookID
+      (element) => element.bookID !== values.bookID
     );
+
+    const bookListIDAfterDeletion = allBooksCartListID.filter(
+      (element) => element !== values._id
+    );
+
+    setAllBooksCartListID(bookListIDAfterDeletion);
     setAllBooksCartList(bookListAfterDeletion);
+
+    console.log("after deletion ID:", allBooksCartListID);
   };
 
   const handleAddBooksCartContext = (values) => {
     const book = {
+      _id: values._id,
       bookID: values.bookID,
       title: values.title,
       author: values.author,
@@ -28,9 +40,21 @@ export const BooksCartProvider = (props) => {
     if (allBooksCartList.some((element) => element.bookID === values.bookID)) {
       handleMessageShow("Ši knyga jau krepšelyje", "error");
     } else {
+      setAllBooksCartListID([book._id, ...allBooksCartListID]);
+      console.log("sarasas isiuntimui i back end turi but tik mongo id: ", allBooksCartListID);
       setAllBooksCartList([book, ...allBooksCartList]);
     }
   };
+
+  const handleRetrieveCurrentUserBooks = async (cardID) => {
+    try {
+      const currentUserBooks = await retrieveCurrentUserBooks(cardID);
+      setCurrentUserBookList(currentUserBooks.data.user.books);
+    } catch (error) {
+      console.log(error);
+    }
+    
+  }
 
   return (
     <BooksCartContext.Provider
@@ -41,7 +65,11 @@ export const BooksCartProvider = (props) => {
         handleAddBooksCartContext,
         currentUser,
         setCurrentUser,
-        action, setAction
+        action, setAction,
+        currentUserBookList,
+        handleRetrieveCurrentUserBooks,setCurrentUserBookList,
+        allBooksCartListID,
+        setAllBooksCartListID
       }}
     >
       {props.children}

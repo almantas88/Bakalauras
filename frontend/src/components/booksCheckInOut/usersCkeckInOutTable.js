@@ -90,7 +90,9 @@ const UsersTable = forwardRef((props, ref) => {
     lastName: values.lastName,
     cardID: values.cardID,
     grade: values.grade
-    })
+    });
+    //Čia padaryt user retrieve
+    booksCartContext.handleRetrieveCurrentUserBooks(values.cardID);
   }
 
   const handleUserSelectCheckIn = (values) => {
@@ -100,7 +102,9 @@ const UsersTable = forwardRef((props, ref) => {
     lastName: values.lastName,
     cardID: values.cardID,
     grade: values.grade
-    })
+    });
+    // čia padaryt user retrieve
+    booksCartContext.handleRetrieveCurrentUserBooks(values.cardID);
   }
 
   return (

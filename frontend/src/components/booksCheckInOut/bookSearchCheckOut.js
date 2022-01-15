@@ -11,8 +11,13 @@ import BooksTable from "./booksCheckOutTable";
 import BooksCart from "./booksCartTable";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { sendOutBookID } from "../../services/checkOutInServices";
+import { MessageContext } from "../../context/messageContext";
 
 export default function BookSearch(props) {
+  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+    useContext(MessageContext);
+
   const booksContext = useContext(BooksContext);
   const booksCartContext = useContext(BooksCartContext);
 
@@ -66,12 +71,31 @@ export default function BookSearch(props) {
 
   const handleSelectOtherUser = () => {
     booksCartContext.setCurrentUser({});
+    booksCartContext.setCurrentUserBookList([]);
+    booksCartContext.setAllBooksCartList([]);
   };
 
   useEffect(() => {
     booksContext.setAllBooksList(booksContext.allBooksList);
     setAllRowsForShowing(booksContext.allBooksList);
   }, [booksContext.allBooksList]);
+
+  const handleGiveOutBooks = async () => {
+    try {
+      await sendOutBookID({
+        bookIDarr: booksCartContext.allBooksCartListID,
+        cardID: booksCartContext.currentUser.cardID,
+      });
+      handleMessageShow("Pavyko išduoti knygas", "success");
+      booksCartContext.setAllBooksCartList([]);
+      booksCartContext.setAllBooksCartListID([]);
+      booksCartContext.setCurrentUser({});
+      booksCartContext.setCurrentUserBookList([]);
+    } catch (error) {
+      console.log(error);
+      handleMessageShow(error.response.data.msg, "error");
+    }
+  };
 
   return (
     <>
@@ -175,38 +199,46 @@ export default function BookSearch(props) {
         </Grid>
       </Container>
 
-        <Grid container spacing={2} sx={{margin: "10px auto",width: "97%"}}>
-          <Grid
-            xs={6}
-            sx={{ margin: "20px 0px" }}
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
+      <Grid container spacing={2} sx={{ margin: "10px auto", width: "97%" }}>
+        <Grid
+          xs={6}
+          sx={{ margin: "20px 0px" }}
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Button
+            size="large"
+            startIcon={<ArrowBackIcon />}
+            variant="contained"
+            onClick={() => {
+              handleSelectOtherUser();
+            }}
           >
-            <Button
-              size="large"
-              startIcon={<ArrowBackIcon />}
-              variant="contained"
-              onClick={() => { handleSelectOtherUser()}}
-            >
-              Pasirinkti kitą vartotoją
-            </Button>
-          </Grid>
-          <Grid
-            xs={6}
-            sx={{ margin: "20px 0px" }}
-            container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-          >
-            <Button endIcon={<SendIcon />} size="large" variant="contained">
-              Atnaujinti vartotojo knygas
-            </Button>
-          </Grid>
+            Pasirinkti kitą vartotoją
+          </Button>
         </Grid>
-
+        <Grid
+          xs={6}
+          sx={{ margin: "20px 0px" }}
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+        >
+          <Button
+            endIcon={<SendIcon />}
+            size="large"
+            variant="contained"
+            onClick={() => {
+              handleGiveOutBooks();
+            }}
+          >
+            Atnaujinti vartotojo knygas
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }

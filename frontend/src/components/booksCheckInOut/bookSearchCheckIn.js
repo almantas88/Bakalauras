@@ -25,7 +25,7 @@ export default function BookSearch(props) {
   const childRef = useRef();
 
   const handleSearchButton = () => {
-    var filteredRows = booksContext.allBooksList;
+    var filteredRows = booksContext.currentUserBookList;
 
     filteredRows = filteredRows.filter((row) => {
       return row.bookID.toLowerCase().includes(searchTextTitle.toLowerCase());
@@ -48,7 +48,7 @@ export default function BookSearch(props) {
     setSearchTextBookId("");
     setSearchTextAuthor("");
     setSearchTextTitle("");
-    setAllRowsForShowing(booksContext.allBooksList);
+    setAllRowsForShowing(booksContext.currentUserBookList);
     childRef.current.setToFirstPage();
   };
 
@@ -65,13 +65,16 @@ export default function BookSearch(props) {
   };
 
   const handleSelectOtherUser = () => {
+    
     booksCartContext.setCurrentUser({});
+    booksCartContext.setCurrentUserBookList([]);
+    booksCartContext.setAllBooksCartList([]);
   };
 
-  useEffect(() => {
-    booksContext.setAllBooksList(booksContext.allBooksList);
-    setAllRowsForShowing(booksContext.allBooksList);
-  }, [booksContext.allBooksList]);
+  // useEffect(() => {
+  //   booksContext.setAllBooksList(booksContext.currentUserBookList);
+  //   setAllRowsForShowing(booksContext.currentUserBookList);
+  // }, [booksContext.currentUserBookList]);
 
   return (
     <>
@@ -157,7 +160,7 @@ export default function BookSearch(props) {
             <h3>Vartotojo knygos:</h3>
             <BooksTable
               ref={childRef}
-              allRowsForShowing={allRowsForShowing}
+              allRowsForShowing={booksCartContext.currentUserBookList}
               handleShowUserInfo={props.handleChange}
               isLoading={props.isLoading}
             />
@@ -190,9 +193,7 @@ export default function BookSearch(props) {
             justifyContent="flex-end"
             alignItems="center"
           >
-            <Button endIcon={<SendIcon />} size="large" variant="contained">
-              Atnaujinti vartotojo knygas
-            </Button>
+          
           </Grid>
         </Grid>
 

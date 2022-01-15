@@ -127,7 +127,7 @@ const BooksTable = forwardRef((props, ref) => {
                             
                                   <Button
                                     onClick={() =>
-                                      booksCartContext.handleDeleteBooksCartContext(row.bookID)
+                                      booksCartContext.handleDeleteBooksCartContext(row)
                                     }
                                   >
                                     Pašalinti

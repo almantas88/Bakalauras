@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const Book = require("../models/book.model");
 
@@ -28,50 +26,6 @@ router.post("/newBook", auth, async (req, res) => {
     res.status(200).json({ msg: "Knyga sukurta!" });
   } catch (err) {
     res.status(500).json({ msg: err.message });
-  }
-});
-
-// Login
-router.post("/login", async (req, res) => {
-  console.log(req.body);
-  try {
-    const { email, password } = req.body;
-    // validate
-    if (!email || !password)
-      return res.status(400).send({ msg: "Ne visi laukai buvo užpildyti." });
-    const user = await User.findOne({ email: email });
-    if (!user)
-      return res
-        .status(400)
-        .send({ msg: "Nėra tokio vartotojo su tokiu el. paštu." });
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.status(400).send({ msg: "Netinkami prisijungimo duomenys." });
-    const token = jwt.sign(
-      {
-        id: user._id,
-        cardID: user.cardID,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role,
-        grade: user.grade,
-      },
-      process.env.JWT_SECRET
-    );
-    res.status(200).send({
-      token,
-      user: {
-        cardID: user.cardID,
-        email: user.email,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        role: user.role,
-        grade: user.grade,
-      },
-    });
-  } catch (err) {
-    res.status(500).send({ msg: err.message });
   }
 });
 

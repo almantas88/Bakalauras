@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/user.model");
+const Book = require("../models/book.model");
 
 //Mokiniu registracija, veliau reiktu gal padaryti ir admino registracija, bet kaip atskira route.
 // Register
@@ -167,9 +168,23 @@ router.get("/allUsers", auth, async (req, res) => {
   }
 });
 
-router.post("/oneUser", auth, async (req, res) => {
+router.post("/oneUser", async (req, res) => {
   try {
     const foundUser = await User.findOne({ cardID: req.body.cardID });
+    if (!foundUser)
+      return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
+    return res.status(200).send({
+      user: foundUser,
+    });
+  } catch (error) {
+    return res.status(500).json({ msg: error.message });
+  }
+});
+
+router.post("/oneUserWithAllBooks", async (req, res) => {
+  console.log(req.body);
+  try {
+    const foundUser = await User.findOne({ cardID: req.body.cardID }).populate('books')
     if (!foundUser)
       return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
     return res.status(200).send({
