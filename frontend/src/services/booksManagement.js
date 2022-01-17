@@ -11,7 +11,12 @@ export async function retrieveCurrentUserBooks(cardID) {
   return response;
 }
 
-export async function sendOutBookID(data) {
-    const response = await axios.post(`${apiUrl}/booksCheckInOut/checkOut`, data);
+export async function giveOutBooks(data) {
+    const response = await axios.post(`${apiUrl}/booksmanagement/giveout`, data);
+    return response;
+  }
+
+export async function returnBooks(data) {
+    const response = await axios.post(`${apiUrl}/booksmanagement/return`, data);
     return response;
   }

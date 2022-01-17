@@ -18,8 +18,10 @@ import InfoAboutUserBox from "../users/infoAboutUser";
 import CircularProgress from "@mui/material/CircularProgress";
 import { UsersContext } from "../../context/usersContext";
 import { BooksCartContext } from "../../context/booksCartContext";
+import { BookManagementContext } from "../../context/bookManagementContext";
 import SendIcon from "@mui/icons-material/Send";
 import { BooksContext } from "../../context/booksContext";
+import { retrieveCurrentUserBooks } from "../../services/booksManagement";
 
 
 const columns = [
@@ -43,7 +45,8 @@ const columns = [
 
 const UsersTable = forwardRef((props, ref) => {
 
-  const booksCartContext = useContext(BooksCartContext);
+  //const booksCartContext = useContext(BooksCartContext);
+  const booksManagementContext = useContext(BookManagementContext);
   const booksContext = useContext(BooksContext);
 
   const [page, setPage] = useState(0);
@@ -86,33 +89,27 @@ const UsersTable = forwardRef((props, ref) => {
     setPage(0);
   };
 
-  const handleUserSelectCheckOut = (values) => {
-    booksCartContext.setAction("CHECKOUT")
-    booksCartContext.setCurrentUser({
+
+
+
+  const handleUserSelectGiveOut = (values) => {
+    props.setAction("GIVEOUT");  
+    booksManagementContext.setCurrentUser({
       firstName: values.firstName,
     lastName: values.lastName,
     cardID: values.cardID,
     grade: values.grade
-    });
-    //Čia padaryt user retrieve
-    booksCartContext.handleRetrieveCurrentUserBooks(values.cardID);
-    
-    booksCartContext.setAllBookForShowingWithoutUserBooks(booksContext.allBooksList);
-    booksCartContext.handleBookForShowing();
+    }); 
   }
 
-  const handleUserSelectCheckIn = (values) => {
-    booksCartContext.setAction("CHECKIN")
-    booksCartContext.setCurrentUser({
+  const handleUserSelectReturn = (values) => {
+    props.setAction("RETURN");
+    booksManagementContext.setCurrentUser({
       firstName: values.firstName,
     lastName: values.lastName,
     cardID: values.cardID,
     grade: values.grade
     });
-    // čia padaryt user retrieve
-    booksCartContext.handleRetrieveCurrentUserBooks(values.cardID);
-    booksCartContext.setAllBookForShowingWithoutUserBooks(booksContext.allBooksList);
-    //booksCartContext.handleBookForShowing();
   }
 
   return (
@@ -160,7 +157,7 @@ const UsersTable = forwardRef((props, ref) => {
                                   </Button>
                                   <Button endIcon={<SendIcon />}
                                     onClick={() =>
-                                     handleUserSelectCheckOut(row)
+                                     handleUserSelectGiveOut(row)
                                     }
                                   >
                                     Išduoti knygas
@@ -168,7 +165,7 @@ const UsersTable = forwardRef((props, ref) => {
 
                                   <Button endIcon={<SendIcon />}
                                     onClick={() =>
-                                      handleUserSelectCheckIn(row)
+                                      handleUserSelectReturn(row)
                                     }
                                   >
                                     Gražinti knygas

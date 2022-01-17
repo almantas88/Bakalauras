@@ -23,6 +23,7 @@ export default function Books() {
     getRole();
     booksContext.allBooksList <= 0 && returnAllBooks();
     usersContext.allUserslist <= 0 && returnAllUsers();
+    booksCartContext.setAllBookForShowingWithoutUserBooks(booksContext.allBooksList);
     console.log(booksContext.allBooksList);
   }, []);
 
@@ -67,7 +68,7 @@ export default function Books() {
   if (booksCartContext.action === "CHECKOUT") {
     actionForChecking = (
       <BookSearchCheckOut
-        booksList={booksContext.allBooksList}
+        booksList={booksCartContext.allBookForShowingWithoutUserBooks}
         isLoading={isLoading}
       ></BookSearchCheckOut>
     );

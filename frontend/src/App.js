@@ -6,6 +6,7 @@ import SignIn from "./pages/SignIn";
 import Users from "./pages/Users";
 import Books from "./pages/Books";
 import BooksCkeckOutCheckIn from "./pages/BooksCheckOutCheckIn";
+import BookManagement from "./pages/BookManagement";
 import FlashMessage from "./components/flashMessage";
 import { MessageContext } from "./context/messageContext";
 
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/books" element={<Books />} />
           <Route path="/bookscheckincheckout" element={<BooksCkeckOutCheckIn />} />
+          <Route path="/bookmanagement" element={<BookManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

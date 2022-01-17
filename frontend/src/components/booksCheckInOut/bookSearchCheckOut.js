@@ -11,7 +11,7 @@ import BooksTable from "./booksCheckOutTable";
 import BooksCart from "./booksCartTable";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { sendOutBookID } from "../../services/checkOutInServices";
+import { giveOutBooks } from "../../services/booksManagement";
 import { MessageContext } from "../../context/messageContext";
 
 export default function BookSearch(props) {
@@ -78,11 +78,21 @@ export default function BookSearch(props) {
   useEffect(() => {
     booksContext.setAllBooksList(booksContext.allBooksList);
     setAllRowsForShowing(booksContext.allBooksList);
+
+    // booksCartContext.handleRetrieveCurrentUserBooks(booksCartContext.currentUser.cardID);
+    // booksCartContext.handleBookForShowing();
   }, [booksContext.allBooksList]);
+
+  // useEffect(() => {
+  //   // booksContext.setAllBooksList(booksContext.currentUserBookList);
+  //   // setAllRowsForShowing(booksContext.currentUserBookList);
+  //   booksCartContext.handleRetrieveCurrentUserBooks(booksCartContext.currentUser.cardID);
+  //   booksCartContext.handleBookForShowing();
+  // }, []);
 
   const handleGiveOutBooks = async () => {
     try {
-      await sendOutBookID({
+      await giveOutBooks({
         bookIDarr: booksCartContext.allBooksCartListID,
         cardID: booksCartContext.currentUser.cardID,
       });
@@ -178,16 +188,16 @@ export default function BookSearch(props) {
 
       <Container maxWidth="fixed" sx={{ overflow: "hidden", width: "100%" }}>
         <Grid container spacing={3}>
-          <Grid item xs={12} md={12} lg={6}>
+          <Grid item md={12} lg={6}>
             <h3>Knygos:</h3>
             <BooksTable
               ref={childRef}
-              allRowsForShowing={allRowsForShowing}
+              allRowsForShowing={booksCartContext.allBookForShowingWithoutUserBooks}
               handleShowUserInfo={props.handleChange}
               isLoading={props.isLoading}
             />
           </Grid>
-          <Grid item xs={12} md={12} lg={6}>
+          <Grid item md={12} lg={6}>
             <h3>Krepšelis:</h3>
             <BooksCart
               ref={childRef}

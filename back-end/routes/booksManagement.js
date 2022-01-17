@@ -5,7 +5,7 @@ const User = require("../models/user.model");
 const mongoose = require("mongoose");
 
 //Vaikui išduodamos knygos
-router.post("/checkOut", async (req, res) => {
+router.post("/giveout", async (req, res) => {
   console.log(req.body);
   try {
     let { cardID, bookIDarr } = req.body;
@@ -64,7 +64,7 @@ router.post("/checkOut", async (req, res) => {
 });
 
 // Vaikas gražina knygas
-router.post("/checkIn", async (req, res) => {
+router.post("/return", async (req, res) => {
   try {
     let { cardID, bookIDarr } = req.body;
 

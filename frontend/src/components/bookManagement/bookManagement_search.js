@@ -5,18 +5,15 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchIcon from "@mui/icons-material/Search";
-import { BooksContext } from "../../context/booksContext";
-import { BooksCartContext } from "../../context/booksCartContext";
-import BooksTable from "./booksCheckInTable";
-import BooksCart from "./booksCartTable";
 import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { BookManagementContext } from "../../context/bookManagementContext";
+import TableList from "./bookManagement_table";
 
-export default function BookSearch(props) {
-  const booksContext = useContext(BooksContext);
-  const booksCartContext = useContext(BooksCartContext);
+export default function Search(props) {
+  const booksManagementContext = useContext(BookManagementContext);
 
-  const [allRowsForShowing, setAllRowsForShowing] = useState(props.booksList);
+  const [allRowsForShowing, setAllRowsForShowing] = useState(props.firstList);
 
   const [searchTextBookId, setSearchTextBookId] = useState("");
   const [searchTextTitle, setSearchTextTitle] = useState("");
@@ -25,7 +22,7 @@ export default function BookSearch(props) {
   const childRef = useRef();
 
   const handleSearchButton = () => {
-    var filteredRows = booksContext.currentUserBookList;
+    var filteredRows = props.firstList;
 
     filteredRows = filteredRows.filter((row) => {
       return row.bookID.toLowerCase().includes(searchTextTitle.toLowerCase());
@@ -48,7 +45,7 @@ export default function BookSearch(props) {
     setSearchTextBookId("");
     setSearchTextAuthor("");
     setSearchTextTitle("");
-    setAllRowsForShowing(booksContext.currentUserBookList);
+    setAllRowsForShowing(props.firstList);
     childRef.current.setToFirstPage();
   };
 
@@ -65,19 +62,27 @@ export default function BookSearch(props) {
   };
 
   const handleSelectOtherUser = () => {
-    
-    booksCartContext.setCurrentUser({});
-    booksCartContext.setCurrentUserBookList([]);
-    booksCartContext.setAllBooksCartList([]);
-    booksCartContext.setAllBookForShowingWithoutUserBooks(booksContext.allBooksList);
+    props.setAction("");
+    booksManagementContext.setCurrentUser({});
+    booksManagementContext.setSelectedBooks([]);
+    booksManagementContext.setCurrentUser({});
+    booksManagementContext.setCurrentUserBooks([]);
   };
 
-  // useEffect(() => {
-  //   // booksContext.setAllBooksList(booksContext.currentUserBookList);
-  //   // setAllRowsForShowing(booksContext.currentUserBookList);
-  //   booksCartContext.handleRetrieveCurrentUserBooks(booksCartContext.currentUser.cardID);
-  //   booksCartContext.handleBookForShowing();
-  // }, []);
+  // const fetchUserBooks = async () => {
+  //   try {
+  //     const { data } = await retrieveCurrentUserBooks(booksManagementContext.currentUser.cardID);
+  //     booksManagementContext.setCurrentUserBooks(data.user.books);
+  //     booksManagementContext.filterBooks(data.user.books);
+  //     console.log("currentUserBooks:", booksManagementContext.currentUserBooks);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  useEffect(() => {
+    setAllRowsForShowing(props.firstList);
+  }, [props.firstList])
 
   return (
     <>
@@ -158,48 +163,73 @@ export default function BookSearch(props) {
         </Grid>
       </Container>
 
-
-      <Grid container spacing={2} sx={{margin: "10px auto",width: "95%"}}>
-            <h3>Vartotojo knygos:</h3>
-            <BooksTable
+      <Grid container spacing={2} sx={{ margin: "10px auto", width: "99%" }}>
+        {/* <BooksTable
               ref={childRef}
               allRowsForShowing={booksCartContext.currentUserBookList}
               handleShowUserInfo={props.handleChange}
               isLoading={props.isLoading}
-            />
-                </Grid>
-
-
-        <Grid container spacing={2} sx={{margin: "10px auto",width: "97%"}}>
-          <Grid
-            xs={6}
-            sx={{ margin: "20px 0px" }}
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="center"
-          >
-            <Button
-              size="large"
-              startIcon={<ArrowBackIcon />}
-              variant="contained"
-              onClick={() => { handleSelectOtherUser()}}
-            >
-              Pasirinkti kitą vartotoją
-            </Button>
-          </Grid>
-          <Grid
-            xs={6}
-            sx={{ margin: "20px 0px" }}
-            container
-            direction="row"
-            justifyContent="flex-end"
-            alignItems="center"
-          >
-          
-          </Grid>
+            /> */}
+        <Grid item xs={12} md={12} lg={6}>
+          <h3>{props.firstListHeading}</h3>
+          <TableList
+            ref={childRef}
+            allRowsForShowing={allRowsForShowing}
+            button={"Pridėti"}
+            handleBookAction={booksManagementContext.handleAddBook}
+          ></TableList>
         </Grid>
+        <Grid item xs={12} md={12} lg={6}>
+          <h3>{props.secondListHeading}</h3>
+          <TableList
+            ref={childRef}
+            allRowsForShowing={props.secondList}
+            button={"Pašalinti"}
+            handleBookAction={booksManagementContext.handleDeleteBook}
+          ></TableList>
+        </Grid>
+      </Grid>
 
+      <Grid container spacing={2} sx={{ margin: "10px auto", width: "97%" }}>
+        <Grid
+          xs={6}
+          sx={{ margin: "20px 0px" }}
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+        >
+          <Button
+            size="large"
+            startIcon={<ArrowBackIcon />}
+            variant="contained"
+            onClick={() => {
+              handleSelectOtherUser();
+            }}
+          >
+            Pasirinkti kitą vartotoją
+          </Button>
+        </Grid>
+        <Grid
+          xs={6}
+          sx={{ margin: "20px 0px" }}
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+        >
+          <Button
+            endIcon={<SendIcon />}
+            size="large"
+            variant="contained"
+            onClick={() => {
+              props.submit()
+            }}
+          >
+            Atnaujinti vartotojo knygas
+          </Button>
+        </Grid>
+      </Grid>
     </>
   );
 }

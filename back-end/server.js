@@ -30,7 +30,7 @@ connectDB();
 //seedbook(1000);
 app.use("/api/users", require("./routes/users"));
 app.use("/api/books", require("./routes/books"));
-app.use("/api/booksCheckInOut", require("./routes/booksCheckInOut"));
+app.use("/api/booksmanagement", require("./routes/booksManagement"));
 
 // deployment
 

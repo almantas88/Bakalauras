@@ -1,6 +1,6 @@
 import { createContext, useState, useContext } from "react";
 import { MessageContext } from "./messageContext";
-import {retrieveCurrentUserBooks} from "../services/checkOutInServices";
+import {retrieveCurrentUserBooks} from "../services/booksManagement";
 export const BooksCartContext = createContext([]);
 
 export const BooksCartProvider = (props) => {
@@ -12,6 +12,8 @@ export const BooksCartProvider = (props) => {
   const [allBooksCartListID, setAllBooksCartListID] = useState([]); //To store book objectsID
   const [currentUser, setCurrentUser] = useState({});
   const [currentUserBookList, setCurrentUserBookList] = useState([]);
+
+  const [allBookForShowingWithoutUserBooks, setAllBookForShowingWithoutUserBooks] = useState([])
 
   const handleDeleteBooksCartContext = (values) => {
     const bookListAfterDeletion = allBooksCartList.filter(
@@ -56,6 +58,16 @@ export const BooksCartProvider = (props) => {
     
   }
 
+  const handleBookForShowing = () => {
+    console.log(allBookForShowingWithoutUserBooks)
+    const filteredList = allBookForShowingWithoutUserBooks.filter(
+      (element) => !currentUserBookList.some(e => e.bookID === element.bookID)
+    )
+    console.log(allBookForShowingWithoutUserBooks,currentUserBookList,filteredList);
+    //setAllBookForShowingWithoutUserBooks(filteredList);
+    
+  }
+
   return (
     <BooksCartContext.Provider
       value={{
@@ -69,7 +81,9 @@ export const BooksCartProvider = (props) => {
         currentUserBookList,
         handleRetrieveCurrentUserBooks,setCurrentUserBookList,
         allBooksCartListID,
-        setAllBooksCartListID
+        setAllBooksCartListID,
+        allBookForShowingWithoutUserBooks, setAllBookForShowingWithoutUserBooks,
+        handleBookForShowing
       }}
     >
       {props.children}

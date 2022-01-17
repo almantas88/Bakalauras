@@ -5,15 +5,18 @@ import { MessageProvider } from "./context/messageContext";
 import { UsersProvider } from "./context/usersContext";
 import { BooksProvider } from "./context/booksContext";
 import { BooksCartProvider } from "./context/booksCartContext";
+import { BookManagementProvider } from "./context/bookManagementContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <MessageProvider>
       <UsersProvider>
         <BooksProvider>
-          <BooksCartProvider>
-            <App />
-          </BooksCartProvider>
+          <BookManagementProvider>
+            <BooksCartProvider>
+              <App />
+            </BooksCartProvider>
+          </BookManagementProvider>
         </BooksProvider>
       </UsersProvider>
     </MessageProvider>
