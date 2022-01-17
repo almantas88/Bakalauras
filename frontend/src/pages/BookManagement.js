@@ -33,6 +33,7 @@ export default function BooksManagement() {
   }, []);
 
   const fetchUserBooks = async () => {
+    setIsLoading(true);
     try {
       const { data } = await retrieveCurrentUserBooks(
         booksManagementContext.currentUser.cardID
@@ -43,10 +44,15 @@ export default function BooksManagement() {
     } catch (error) {
       console.log(error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (booksManagementContext.currentUser.cardID) fetchUserBooks();
+    if (booksManagementContext.currentUser.cardID) {
+      
+      fetchUserBooks();
+     
+    }
     console.log("sexond effect");
   }, [booksManagementContext.currentUser]);
 
@@ -87,7 +93,6 @@ export default function BooksManagement() {
   if (actionType === "GIVEOUT") {
     actionForChecking = (
       <>
-        <h1>ISDAVIMAS</h1>
         <Search
           setAction={setActionType}
           firstList={booksManagementContext.filteredBooksList}
@@ -95,6 +100,7 @@ export default function BooksManagement() {
           firstListHeading={"Knygos:"}
           secondListHeading={"Knygų krepšelis išdavimui:"}
           submit={booksManagementContext.handleSubmitGiveout}
+          loading = {isLoading}
         ></Search>
       </>
       // <BookSearchCheckOut
@@ -104,11 +110,17 @@ export default function BooksManagement() {
     );
   } else if (actionType === "RETURN") {
     actionForChecking = (
-      <h1>GRAZINIMAS</h1>
-      // <BookSearchCheckIn
-      //   booksList={booksContext.allBooksList}
-      //   isLoading={isLoading}
-      // ></BookSearchCheckIn>
+      <>
+        <Search
+          setAction={setActionType}
+          firstList={booksManagementContext.currentUserBooks}
+          secondList={booksManagementContext.selectedBooks}
+          firstListHeading={"Vartotojo knygos:"}
+          secondListHeading={"Knygų krepšelis gražinimui:"}
+          submit={booksManagementContext.handleSubmitReturn}
+          loading = {isLoading}
+        ></Search>
+      </>
     );
   }
 

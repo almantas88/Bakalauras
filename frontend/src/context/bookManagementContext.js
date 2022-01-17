@@ -3,6 +3,7 @@ import { MessageContext } from "./messageContext";
 import {
   retrieveCurrentUserBooks,
   giveOutBooks,
+  returnBooks
 } from "../services/booksManagement";
 import { BooksContext } from "../context/booksContext";
 export const BookManagementContext = createContext([]);
@@ -72,6 +73,20 @@ export const BookManagementProvider = (props) => {
     }
   };
 
+  const handleSubmitReturn = async () => {
+    var idArray = filterOnlyID(selectedBooks);
+    try {
+      await returnBooks({cardID: currentUser.cardID, bookIDarr: idArray });
+      handleMessageShow("Pavyko išduoti knygas", "success");
+      setSelectedBooks([]);
+      setCurrentUser({});
+      setCurrentUserBooks([]);
+    } catch (error) {
+      console.log(error);
+      handleMessageShow(error.response.data.msg, "error");
+    }
+  };
+
   const filterOnlyID = (selectedBooks) => {
     let filteredID = selectedBooks.map((a) => a._id);
     return filteredID;
@@ -90,7 +105,7 @@ export const BookManagementProvider = (props) => {
         currentUserBooks,
         handleAddBook,
         handleDeleteBook,
-        handleSubmitGiveout,setSelectedBooks
+        handleSubmitGiveout,setSelectedBooks, handleSubmitReturn
       }}
     >
       {props.children}

@@ -9,6 +9,7 @@ import SendIcon from "@mui/icons-material/Send";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { BookManagementContext } from "../../context/bookManagementContext";
 import TableList from "./bookManagement_table";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Search(props) {
   const booksManagementContext = useContext(BookManagementContext);
@@ -82,7 +83,7 @@ export default function Search(props) {
 
   useEffect(() => {
     setAllRowsForShowing(props.firstList);
-  }, [props.firstList])
+  }, [props.firstList]);
 
   return (
     <>
@@ -172,12 +173,16 @@ export default function Search(props) {
             /> */}
         <Grid item xs={12} md={12} lg={6}>
           <h3>{props.firstListHeading}</h3>
-          <TableList
-            ref={childRef}
-            allRowsForShowing={allRowsForShowing}
-            button={"Pridėti"}
-            handleBookAction={booksManagementContext.handleAddBook}
-          ></TableList>
+          {props.loading ? (
+           <CircularProgress sx={{ display: "flex", margin: "130px auto" }} />
+          ) : (
+            <TableList
+              ref={childRef}
+              allRowsForShowing={allRowsForShowing}
+              button={"Pridėti"}
+              handleBookAction={booksManagementContext.handleAddBook}
+            ></TableList>
+          )}
         </Grid>
         <Grid item xs={12} md={12} lg={6}>
           <h3>{props.secondListHeading}</h3>
@@ -223,7 +228,7 @@ export default function Search(props) {
             size="large"
             variant="contained"
             onClick={() => {
-              props.submit()
+              props.submit();
             }}
           >
             Atnaujinti vartotojo knygas
