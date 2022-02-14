@@ -49,9 +49,7 @@ export default function BooksManagement() {
 
   useEffect(() => {
     if (booksManagementContext.currentUser.cardID) {
-      
       fetchUserBooks();
-     
     }
     console.log("sexond effect");
   }, [booksManagementContext.currentUser]);
