@@ -15,6 +15,7 @@ import ListIcon from "@mui/icons-material/List";
 import { Link, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "../services/authServices";
 import { logout } from "../services/authServices";
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function TemporaryDrawer() {
   const [state, setState] = React.useState({
@@ -93,6 +94,15 @@ export default function TemporaryDrawer() {
               <AutoStoriesIcon />
             </ListItemIcon>
             <ListItemText primary={"Knygų išdavimas 2"} />
+          </ListItem>
+        </Link>
+
+        <Link className="link" to="/settings">
+          <ListItem button key={"Nustatymai"}>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Nustatymai"} />
           </ListItem>
         </Link>
 

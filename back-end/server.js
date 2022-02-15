@@ -31,6 +31,7 @@ connectDB();
 app.use("/api/users", require("./routes/users"));
 app.use("/api/books", require("./routes/books"));
 app.use("/api/booksmanagement", require("./routes/booksManagement"));
+app.use("/api/students", require("./routes/studentBooks"));
 
 // deployment
 

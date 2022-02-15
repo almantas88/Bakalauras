@@ -64,6 +64,12 @@ html, body{
   top: 120px;
 }
 
+.logoutStudent-btn{
+  position: absolute !important;
+  right: 2.5%;
+  top: 20px;
+}
+
 .addUserBox{
   margin: 0;
   z-index: 2;
@@ -119,4 +125,26 @@ html, body{
   position: absolute !important;
   right: 2.5%;
   top: 120px;
+}
+
+.notFound.top{
+  font-size: 100px;
+  text-align: center;
+}
+
+.notFound.btn{
+  display: block;
+  font-size: 18px;
+  margin: 0 auto;
+}
+
+.notFound{
+  font-size: 30px;
+  text-align: center;
+}
+
+.box{
+  width: 300px;
+  height: 200px;
+  background-color: red;
 }

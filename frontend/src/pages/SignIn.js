@@ -29,11 +29,17 @@ export default function SignInSide() {
 
   const doSubmit = async (email, password) => {
     try {
-      await login({ email, password });
+      //await login({ email, password });
+      const { data } = await login({ email, password });
+      console.log(data);
       handleMessageShow("Pavyko prisijungti", "success");
       setTimeout(() => {
         closeError();
-        window.location = "/users";
+        if (data.user.role === "ADMIN") {
+          window.location = "/users";
+        } else if (data.user.role === "STUDENT") {
+          window.location = "/student";
+        }
       }, 500);
     } catch (error) {
       handleMessageShow(error.response.data.msg, "error");

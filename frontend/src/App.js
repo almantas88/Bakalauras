@@ -9,6 +9,10 @@ import BooksCkeckOutCheckIn from "./pages/BooksCheckOutCheckIn";
 import BookManagement from "./pages/BookManagement";
 import FlashMessage from "./components/flashMessage";
 import { MessageContext } from "./context/messageContext";
+import StudentsPage from "./pages/StudentsPage";
+import Settings from "./pages/Settings";
+import NotFound from "./pages/NotFound";
+import Unauthorized from "./pages/Unauthorized"
 
 export default function App() {
   return (
@@ -22,6 +26,9 @@ export default function App() {
           <Route path="/books" element={<Books />} />
           <Route path="/bookscheckincheckout" element={<BooksCkeckOutCheckIn />} />
           <Route path="/bookmanagement" element={<BookManagement />} />
+          <Route path="/student" element={<StudentsPage />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
@@ -31,10 +38,4 @@ export default function App() {
 
 
 
-function NotFound() {
-  return (
-    <div>
-      <h2>404 klaida</h2>
-    </div>
-  );
-}
+
