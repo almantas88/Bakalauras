@@ -29,6 +29,8 @@ export default function BooksManagement() {
     getRole();
     booksContext.allBooksList <= 0 && returnAllBooks();
     usersContext.allUserslist <= 0 && returnAllUsers();
+    setActionType("");
+    booksManagementContext.setCurrentUser({});
     console.log("first effect");
   }, []);
 

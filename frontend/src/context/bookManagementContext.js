@@ -27,13 +27,10 @@ export const BookManagementProvider = (props) => {
   //Functions
 
   const filterBooks = async (userBooks) => {
-    console.log("first:", booksContext.allBooksList);
-    console.log("second:", userBooks);
     const filteredList = booksContext.allBooksList.filter(
       (element) => !userBooks.some((e) => e.bookID === element.bookID)
     );
     setFilteredBooksList(filteredList);
-    console.log("filtered list:", filteredList);
   };
 
   const handleAddBook = (values) => {
@@ -68,7 +65,6 @@ export const BookManagementProvider = (props) => {
       setCurrentUser({});
       setCurrentUserBooks([]);
     } catch (error) {
-      console.log(error);
       handleMessageShow(error.response.data.msg, "error");
     }
   };
@@ -82,7 +78,6 @@ export const BookManagementProvider = (props) => {
       setCurrentUser({});
       setCurrentUserBooks([]);
     } catch (error) {
-      console.log(error);
       handleMessageShow(error.response.data.msg, "error");
     }
   };
