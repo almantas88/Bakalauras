@@ -157,7 +157,28 @@ router.get("/", auth, async (req, res) => {
 
 router.get("/allUsers", auth, async (req, res) => {
   try {
-    const allUsers = await User.find({ role: { $ne: "ADMIN" } }).sort({
+    // const allUsers = await User.find({ role: { $ne: "ADMIN" }}, 'email firstName lastName cardID role grade books').sort({
+    //   grade: "asc",
+    // });
+    const allUsers = await User.aggregate([
+      { $match: { role: { $ne: "ADMIN" } } },
+      {
+        $project: {
+          _id:1,
+          email: 1,
+          firstName: 1,
+          lastName: 1,
+          cardID: 1,
+          role: 1,
+          grade: 1,
+          booksLength: {
+            $size: {
+              $cond: [{ $isArray: "$books" }, "$books", []],
+            },
+          },
+        },
+      },
+    ]).sort({
       grade: "asc",
     });
     return res.status(200).send({
@@ -184,7 +205,9 @@ router.post("/oneUser", async (req, res) => {
 router.post("/oneUserWithAllBooks", async (req, res) => {
   console.log(req.body);
   try {
-    const foundUser = await User.findOne({ cardID: req.body.cardID }).populate('books')
+    const foundUser = await User.findOne({ cardID: req.body.cardID }).populate(
+      "books"
+    );
     if (!foundUser)
       return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
     return res.status(200).send({

@@ -33,7 +33,8 @@ const columns = [
   },
   { id: "firstName", label: "Vardas", width: 150, minWidth: 150 },
   { id: "lastName", label: "Pavardė", width: 150, minWidth: 150 },
-  { id: "grade", label: "Klasė", width: 10, minWidth: 10 },
+  { id: "grade", label: "Klasė", width: 10, minWidth: 10, align: "right" },
+  { id: "booksLength", label: "Knygų kiekis", width: 10, minWidth: 10, align: "right" },
   {
     id: "actions",
     label: "Veiksmai",
