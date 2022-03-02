@@ -99,7 +99,8 @@ const UsersTable = forwardRef((props, ref) => {
       firstName: values.firstName,
     lastName: values.lastName,
     cardID: values.cardID,
-    grade: values.grade
+    grade: values.grade,
+    booksLength: values.booksLength
     }); 
   }
 
@@ -109,7 +110,8 @@ const UsersTable = forwardRef((props, ref) => {
       firstName: values.firstName,
     lastName: values.lastName,
     cardID: values.cardID,
-    grade: values.grade
+    grade: values.grade,
+    booksLength: values.booksLength
     });
   }
 

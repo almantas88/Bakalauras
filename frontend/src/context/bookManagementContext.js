@@ -6,6 +6,8 @@ import {
   returnBooks
 } from "../services/booksManagement";
 import { BooksContext } from "../context/booksContext";
+import { UsersContext } from "../context/usersContext";
+
 export const BookManagementContext = createContext([]);
 
 export const BookManagementProvider = (props) => {
@@ -13,6 +15,7 @@ export const BookManagementProvider = (props) => {
     useContext(MessageContext);
 
   const booksContext = useContext(BooksContext);
+  const usersContext = useContext(UsersContext);
 
   //User state
   const [currentUser, setCurrentUser] = useState({});
@@ -61,6 +64,7 @@ export const BookManagementProvider = (props) => {
     try {
       await giveOutBooks({cardID: currentUser.cardID, bookIDarr: idArray });
       handleMessageShow("Pavyko išduoti knygas", "success");
+      usersContext.handleUpdateUserBooksCountContext(currentUser.cardID, currentUser, "+", idArray.length);
       setSelectedBooks([]);
       setCurrentUser({});
       setCurrentUserBooks([]);
@@ -73,7 +77,8 @@ export const BookManagementProvider = (props) => {
     var idArray = filterOnlyID(selectedBooks);
     try {
       await returnBooks({cardID: currentUser.cardID, bookIDarr: idArray });
-      handleMessageShow("Pavyko išduoti knygas", "success");
+      handleMessageShow("Pavyko gražinti knygas", "success");
+      usersContext.handleUpdateUserBooksCountContext(currentUser.cardID, currentUser, "-", idArray.length);
       setSelectedBooks([]);
       setCurrentUser({});
       setCurrentUserBooks([]);

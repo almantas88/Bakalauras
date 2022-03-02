@@ -25,9 +25,33 @@ export const UsersProvider = (props) => {
     ]);
   };
 
+  const handleUpdateUserBooksCountContext = (cardID, values, operator, count) => {
+    const userListAfterUpdate = allUserslist.filter((element) =>  element.cardID !== cardID   )
+    console.log(cardID, values, operator, count);
+    var newBooksLength = values.booksLength;
+
+    if(operator === "+"){
+      newBooksLength = newBooksLength + count;
+    }
+    else if( operator === "-"){
+      newBooksLength = newBooksLength - count;
+    }
+    console.log(newBooksLength);
+    setAllUsersList([
+      {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        cardID: values.cardID,
+        grade: values.grade,
+        booksLength: newBooksLength
+      },
+      ...userListAfterUpdate,
+    ]);
+  };
+
   return (
     <UsersContext.Provider
-      value={{allUserslist, setAllUsersList, handleDeleteUserContext, handleUpdateUserContext}}
+      value={{allUserslist, setAllUsersList, handleDeleteUserContext, handleUpdateUserContext, handleUpdateUserBooksCountContext}}
     >
       {props.children}
     </UsersContext.Provider>
