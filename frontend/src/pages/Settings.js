@@ -8,7 +8,7 @@ import Card from "../components/settings/card";
 import imageHeaderGrade from "../public/images/Klase.jpg";
 import imageHeaderExcel from "../public/images/excel.jpg";
 
-
+import GradesSettings from "../components/settings/gradesSettings";
 
 const columns = [
   { field: "bookID", headerName: "ID", width: 110 },
@@ -21,6 +21,7 @@ const columns = [
 export default function StudentsPage() {
   //const [usersList, setUsersList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showGradesSettings, setShowGradesSettings] = useState(false);
 
   useEffect(() => {
     getRole();
@@ -38,6 +39,10 @@ export default function StudentsPage() {
     }
   }
 
+  const handleShowUserAddForm = () => {
+    showGradesSettings ? setShowGradesSettings(false) : setShowGradesSettings(true);
+  };
+
   return (
     <div>
       <MenuDrawer />
@@ -54,20 +59,27 @@ export default function StudentsPage() {
             header="Klasių redagavimas"
             description="Klasių redagavimo įrankis skirtas pridėti arba pašalinti klases."
             imageHeader={imageHeaderGrade}
+            handleChange={handleShowUserAddForm}
           />
         </Grid>
         <Grid item>
-          <Card  header="Mokinių importavimas"
+          <Card
+            header="Mokinių importavimas"
             description="Didelio kiekio mokinių impotavimas naudojant excel csv formato failą."
-            imageHeader={imageHeaderExcel}/>
+            imageHeader={imageHeaderExcel}
+          />
         </Grid>
-      
+
         <Grid item>
-          <Card  header="Knygų importavimas"
+          <Card
+            header="Knygų importavimas"
             description="Didelio kiekio knygų impotavimas naudojant excel csv formato failą."
-            imageHeader={imageHeaderExcel}/>
+            imageHeader={imageHeaderExcel}
+          />
         </Grid>
       </Grid>
+
+      {showGradesSettings ? <GradesSettings handleChange={handleShowUserAddForm}/> : null}
     </div>
   );
 }

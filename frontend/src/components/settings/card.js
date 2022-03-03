@@ -26,7 +26,7 @@ export default function MediaCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Tvarkyti</Button>
+        <Button onClick={props.handleChange} size="small">Tvarkyti</Button>
       </CardActions>
     </Card>
   );

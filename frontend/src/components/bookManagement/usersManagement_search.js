@@ -7,82 +7,20 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import SearchIcon from "@mui/icons-material/Search";
 import UsersTable from "./usersManagement_table";
 import { UsersContext } from "../../context/usersContext";
+import { GradesContext } from "../../context/gradesContext";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const grades = [
-  {
-    value: "1a",
-    label: "1a",
-  },
-  {
-    value: "1b",
-    label: "1b",
-  },
-  {
-    value: "1c",
-    label: "1c",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  
-];
+
 
 export default function UsersSearch(props) {
   const usersContext =
     useContext(UsersContext);
+
+    const gradesContext =
+    useContext(GradesContext);
 
   const [allRowsForShowing, setAllRowsForShowing] = useState(usersContext.allUserslist);
 
@@ -150,6 +88,10 @@ export default function UsersSearch(props) {
     setAllRowsForShowing(usersContext.allUserslist);
   }, [usersContext.allUserslist]);
 
+  useEffect(() => {
+    gradesContext.getAllGrades();
+  }, []);
+
   return (
     <>
       <Container sx={{ overflow: "hidden", width: "95%" }}>
@@ -201,9 +143,9 @@ export default function UsersSearch(props) {
               value={grade}
               onChange={handleChange}
             >
-              {grades.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+              {gradesContext.gradesList.map((option) => (
+                <MenuItem key={option.grade} value={option.grade}>
+                  {option.grade}
                 </MenuItem>
               ))}
             </TextField>
