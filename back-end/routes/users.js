@@ -204,14 +204,44 @@ router.post("/oneUser", async (req, res) => {
 
 router.post("/oneUserWithAllBooks", async (req, res) => {
   console.log(req.body);
+  
   try {
+    var user = {};
     const foundUser = await User.findOne({ cardID: req.body.cardID }).populate(
-      "books"
+      
+      { path: "books.bookId" }
     );
     if (!foundUser)
       return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
+
+      user = {
+        _id: foundUser._id,
+        email: foundUser.email,
+        firstName: foundUser.firstName,
+        lastName: foundUser.lastName,
+        cardID: foundUser.cardID,
+        role: foundUser.role,
+        grade: foundUser.grade
+      }
+
+      console.log(foundUser);
+      var bookArr = [];
+      foundUser.books.forEach(element => {
+        console.log(element);
+        bookArr.push({
+          _id: element.bookId._id,
+          title: element.bookId.title,
+          author: element.bookId.author,
+          description: element.bookId.description,      
+          bookID: element.bookId.bookID,
+        })
+      });
+      // man atroDo čia reikia formuoti duomenis
+
+      user.books = bookArr;
+
     return res.status(200).send({
-      user: foundUser,
+      user: user,
     });
   } catch (error) {
     return res.status(500).json({ msg: error.message });

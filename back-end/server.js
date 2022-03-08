@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const seed = require('./seed');
 const seedbook = require('./seedBooks');
+const createAdmin = require('./createAdmin');
 const path = require("path");
 
 app = express();
@@ -26,7 +27,8 @@ const connectDB = async () => {
 };
 
 connectDB();
-//seed(1000);
+//createAdmin();
+//seed(50);
 //seedbook(1000);
 app.use("/api/users", require("./routes/users"));
 app.use("/api/books", require("./routes/books"));
