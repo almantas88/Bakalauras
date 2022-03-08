@@ -42,7 +42,6 @@ export default function BooksManagement() {
       );
       booksManagementContext.setCurrentUserBooks(data.user.books);
       booksManagementContext.filterBooks(data.user.books);
-      console.log("currentUserBooks:", booksManagementContext.currentUserBooks);
     } catch (error) {
       console.log(error);
     }
@@ -100,7 +99,7 @@ export default function BooksManagement() {
           firstListHeading={"Knygos:"}
           secondListHeading={"Knygų krepšelis išdavimui:"}
           submit={booksManagementContext.handleSubmitGiveout}
-          loading = {isLoading}
+          loading={isLoading}
         ></Search>
       </>
       // <BookSearchCheckOut
@@ -109,6 +108,7 @@ export default function BooksManagement() {
       // ></BookSearchCheckOut>
     );
   } else if (actionType === "RETURN") {
+    console.log("pra6au rodyk gerai", booksManagementContext.currentUserBooks);
     actionForChecking = (
       <>
         <Search
@@ -118,7 +118,7 @@ export default function BooksManagement() {
           firstListHeading={"Vartotojo knygos:"}
           secondListHeading={"Knygų krepšelis gražinimui:"}
           submit={booksManagementContext.handleSubmitReturn}
-          loading = {isLoading}
+          loading={isLoading}
         ></Search>
       </>
     );

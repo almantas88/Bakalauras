@@ -68,6 +68,7 @@ export const BookManagementProvider = (props) => {
       setSelectedBooks([]);
       setCurrentUser({});
       setCurrentUserBooks([]);
+      
     } catch (error) {
       handleMessageShow(error.response.data.msg, "error");
     }

@@ -61,9 +61,9 @@ export const BooksCartProvider = (props) => {
   const handleBookForShowing = () => {
     console.log(allBookForShowingWithoutUserBooks)
     const filteredList = allBookForShowingWithoutUserBooks.filter(
-      (element) => !currentUserBookList.some(e => e.bookID === element.bookID)
+      (element) => !currentUserBookList.some(e => e.bookId.bookID === element.bookID)
     )
-    console.log(allBookForShowingWithoutUserBooks,currentUserBookList,filteredList);
+    console.log("tikrinu 2ia", allBookForShowingWithoutUserBooks,currentUserBookList,filteredList);
     //setAllBookForShowingWithoutUserBooks(filteredList);
     
   }

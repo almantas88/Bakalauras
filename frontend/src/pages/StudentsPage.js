@@ -13,7 +13,7 @@ const columns = [
   { field: "bookID", headerName: "ID", width: 110 },
   { field: "title", headerName: "Knygos pavadinimas", width: 430 },
   { field: "author", headerName: "Autorius", width: 230 },
-  { field: "takeDate", headerName: "Paėmimo data", width: 230 },
+  { field: "dateTaken", headerName: "Paėmimo data", width: 230 },
   { field: "returnDate", headerName: "Iki kada gražinti", width: 230 }
 ];
 
@@ -48,10 +48,10 @@ export default function StudentsPage() {
     setIsLoading(true);
     try {
       const {data} = await getUserBooks();
-      console.log(data.books);
+      console.log(data);
 
-      setStudentBooks(data.books);
-      console.log(studentBooks);
+      setStudentBooks(data.booksArr);
+
     } catch (error) {
       console.log(error);
     }
