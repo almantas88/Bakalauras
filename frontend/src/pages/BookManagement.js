@@ -108,7 +108,6 @@ export default function BooksManagement() {
       // ></BookSearchCheckOut>
     );
   } else if (actionType === "RETURN") {
-    console.log("pra6au rodyk gerai", booksManagementContext.currentUserBooks);
     actionForChecking = (
       <>
         <Search

@@ -104,6 +104,7 @@ export default function UsersSearch(props) {
               onChange={(event) => {
                 handleChangeCardId(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Kortelės ID"
               variant="outlined"
               autoComplete="disabled"
@@ -116,6 +117,7 @@ export default function UsersSearch(props) {
               onChange={(event) => {
                 handleChangeFirstName(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Vardas"
               variant="outlined"
               autoComplete="disabled"
@@ -128,6 +130,7 @@ export default function UsersSearch(props) {
               onChange={(event) => {
                 handleChangeLastName(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Pavardė"
               variant="outlined"
               autoComplete="disabled"

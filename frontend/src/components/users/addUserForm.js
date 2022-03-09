@@ -6,10 +6,15 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { createNewUser } from "../../services/userServices";
 import { MessageContext } from "../../context/messageContext";
+import { GradesContext } from "../../context/gradesContext";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function AddUserForm(props) {
   const [message, severity, showMessageBox, handleMessageShow, closeError] =
     useContext(MessageContext);
+
+    const gradesContext =
+    useContext(GradesContext);
 
   const [values, setValues] = useState({
     firstName: "",
@@ -30,6 +35,13 @@ export default function AddUserForm(props) {
     });
   };
 
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      grade: event.target.value,
+    });
+  };
+
   const handleSubmit = async () => {
     try {
       const { data } = await createNewUser(values);
@@ -41,6 +53,7 @@ export default function AddUserForm(props) {
           cardID: values.cardID,
           firstName: values.firstName,
           lastName: values.lastName,
+          booksLength: 0
         },
         ...props.usersList,
       ]);
@@ -50,6 +63,8 @@ export default function AddUserForm(props) {
       handleMessageShow(error.response.data.msg, "error");
     }
   };
+
+
 
   return (
     <div className="addUserContainer">
@@ -109,16 +124,21 @@ export default function AddUserForm(props) {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              name="grade"
-              value={values.grade}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              autoComplete="disabled"
+          <TextField
+            fullWidth
+              id="outlined-select-currency"
+              select
+              inputProps={{MenuProps: {disableScrollLock: true}}}
               label="Klasė"
-              variant="outlined"
-            />
+              value={values.grade}
+              onChange={handleChange}
+            >
+              {gradesContext.gradesList.map((option) => (
+                <MenuItem key={option.grade} value={option.grade}>
+                  {option.grade}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
           <Grid item xs={12}>
             <h3>Vaiko prisijungimo duomenys</h3>

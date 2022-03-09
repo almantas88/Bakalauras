@@ -14,74 +14,6 @@ import Select from "@mui/material/Select";
 import { GradesContext } from "../../context/gradesContext";
 
 
-const grades = [
-  {
-    value: "1a",
-    label: "1a",
-  },
-  {
-    value: "1b",
-    label: "1b",
-  },
-  {
-    value: "1c",
-    label: "1c",
-  },
-  {
-    value: "2a",
-    label: "2a",
-  },
-  {
-    value: "2b",
-    label: "2b",
-  },
-  {
-    value: "2c",
-    label: "2c",
-  },
-  {
-    value: "2d",
-    label: "2d",
-  },
-  {
-    value: "3a",
-    label: "3a",
-  },
-  {
-    value: "4a",
-    label: "4a",
-  },
-  {
-    value: "5a",
-    label: "5a",
-  },
-  {
-    value: "6a",
-    label: "6a",
-  },
-  {
-    value: "7a",
-    label: "7a",
-  },
-  {
-    value: "8a",
-    label: "8a",
-  },
-  {
-    value: "9a",
-    label: "9a",
-  },
-  {
-    value: "10a",
-    label: "10a",
-  },
-  {
-    value: "11a",
-    label: "11a",
-  },
-  
-];
-
 export default function UsersSearch(props) {
   const usersContext =
     useContext(UsersContext);
@@ -159,7 +91,20 @@ export default function UsersSearch(props) {
 
   useEffect(() => {
     gradesContext.getAllGrades();
+    // window.addEventListener("keydown",
+    //         (event) => {
+    //             // space
+    //             console.log(event);
+    //             if (event.keycode === 13) {
+    //               console.log(event);
+    //               handleSearchButton();
+    //             }
+    //         }, false);
   }, []);
+
+
+   
+ 
 
   return (
     <>
@@ -173,6 +118,7 @@ export default function UsersSearch(props) {
               onChange={(event) => {
                 handleChangeCardId(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Kortelės ID"
               variant="outlined"
               autoComplete="disabled"
@@ -185,6 +131,7 @@ export default function UsersSearch(props) {
               onChange={(event) => {
                 handleChangeFirstName(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Vardas"
               variant="outlined"
               autoComplete="disabled"
@@ -197,6 +144,7 @@ export default function UsersSearch(props) {
               onChange={(event) => {
                 handleChangeLastName(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Pavardė"
               variant="outlined"
               autoComplete="disabled"

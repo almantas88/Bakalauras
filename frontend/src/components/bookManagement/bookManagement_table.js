@@ -120,11 +120,7 @@ import React, {
                               <TableCell key={column.id} align={column.align}>
                                 {column.id === "actions" ? (
                                   <>
-                                    <Button
-                                      onClick={() => handleShowBookInfo(row)}
-                                    >
-                                      Informacija
-                                    </Button>
+                                 
                               
                                     <Button
                                       onClick={() =>
@@ -162,12 +158,6 @@ import React, {
             />
           </Paper>
         )}
-        {showBookInfo ? (
-          <InfoAboutBookBox
-            bookInfo={bookInfo}
-            handleChange={handleShowBookInfo}
-          />
-        ) : null}
   
       </>
     );

@@ -8,10 +8,17 @@ import { MessageContext } from "../../context/messageContext";
 import { getOneUser, updateOneUser } from "../../services/userServices";
 import CircularProgress from "@mui/material/CircularProgress";
 import { UsersContext } from "../../context/usersContext";
+import { GradesContext } from "../../context/gradesContext";
+import MenuItem from "@mui/material/MenuItem";
+
 
 export default function UpdateUserForm(props) {
   const [message, severity, showMessageBox, handleMessageShow, closeError] =
     useContext(MessageContext);
+
+    
+    const gradesContext =
+    useContext(GradesContext);
 
     const usersContext =
     useContext(UsersContext);
@@ -34,6 +41,13 @@ export default function UpdateUserForm(props) {
     setValues({
       ...values,
       [name]: value,
+    });
+  };
+
+  const handleChange = (event) => {
+    setValues({
+      ...values,
+      grade: event.target.value,
     });
   };
 
@@ -138,16 +152,21 @@ export default function UpdateUserForm(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                name="grade"
-                value={values.grade}
-                onChange={handleInputChange}
-                fullWidth
-                required
-                autoComplete="disabled"
-                label="Klasė"
-                variant="outlined"
-              />
+            <TextField
+            fullWidth
+              id="outlined-select-currency"
+              select
+              inputProps={{MenuProps: {disableScrollLock: true}}}
+              label="Klasė"
+              value={values.grade}
+              onChange={handleChange}
+            >
+              {gradesContext.gradesList.map((option) => (
+                <MenuItem key={option.grade} value={option.grade}>
+                  {option.grade}
+                </MenuItem>
+              ))}
+            </TextField>
             </Grid>
             <Grid item xs={12}>
               <h3>Vaiko prisijungimo duomenys</h3>

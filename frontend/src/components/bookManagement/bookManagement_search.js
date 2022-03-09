@@ -97,6 +97,7 @@ export default function Search(props) {
               onChange={(event) => {
                 handleChangeTitle(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Knygos ID"
               variant="outlined"
               autoComplete="disabled"
@@ -109,6 +110,7 @@ export default function Search(props) {
               onChange={(event) => {
                 handleChangeBookID(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Pavadinimas"
               variant="outlined"
               autoComplete="disabled"
@@ -121,6 +123,7 @@ export default function Search(props) {
               onChange={(event) => {
                 handleChangeAuthor(event.target.value);
               }}
+              onKeyPress={e => e.key === 'Enter' && handleSearchButton()}
               label="Autorius"
               variant="outlined"
               autoComplete="disabled"
