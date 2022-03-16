@@ -9,6 +9,7 @@ import imageHeaderGrade from "../public/images/Klase.jpg";
 import imageHeaderExcel from "../public/images/excel.jpg";
 
 import GradesSettings from "../components/settings/gradesSettings";
+import ImportUserCsv from "../components/settings/importUserCsv";
 
 const columns = [
   { field: "bookID", headerName: "ID", width: 110 },
@@ -22,6 +23,7 @@ export default function StudentsPage() {
   //const [usersList, setUsersList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showGradesSettings, setShowGradesSettings] = useState(false);
+  const [showImportUserCsvSettings, setShowImportUserCsvSettings] = useState(false);
 
   useEffect(() => {
     getRole();
@@ -41,6 +43,10 @@ export default function StudentsPage() {
 
   const handleShowUserAddForm = () => {
     showGradesSettings ? setShowGradesSettings(false) : setShowGradesSettings(true);
+  };
+
+  const handleShowUserCsvImport = () => {
+    showImportUserCsvSettings ? setShowImportUserCsvSettings(false) : setShowImportUserCsvSettings(true);
   };
 
   return (
@@ -67,6 +73,7 @@ export default function StudentsPage() {
             header="Mokinių importavimas"
             description="Didelio kiekio mokinių impotavimas naudojant excel csv formato failą."
             imageHeader={imageHeaderExcel}
+            handleChange={handleShowUserCsvImport}
           />
         </Grid>
 
@@ -80,6 +87,7 @@ export default function StudentsPage() {
       </Grid>
 
       {showGradesSettings ? <GradesSettings handleChange={handleShowUserAddForm}/> : null}
+      {showImportUserCsvSettings ? <ImportUserCsv handleChange={handleShowUserCsvImport}/> : null}
     </div>
   );
 }

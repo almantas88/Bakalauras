@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/almantas88/bakalauras/issues"
   },
-  "homepage": "https://github.com/almantas88/bakalauras#readme"
+  "homepage": "https://github.com/almantas88/bakalauras#readme",
+  "dependencies": {
+    "convert-csv-to-json": "^1.3.3"
+  }
 }
