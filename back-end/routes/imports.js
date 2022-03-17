@@ -10,8 +10,8 @@ const fs = require("fs");
 
 router.post("/userImport", async (req, res) => {
   const { myFile } = req.files;
-  myFile.mv(__dirname + "/public/data/" + myFile.name);
-  console.log(myFile.data);
+  //myFile.mv(__dirname + "/public/data/" + myFile.name);
+  console.log(myFile.data.toString('utf-8'));
 
   //   var arrayToInsert = [];
   //   csv({
@@ -34,16 +34,9 @@ router.post("/userImport", async (req, res) => {
 
   const jsonArray = await csv({
     delimiter: ";",
-  }).fromFile("./routes/public/data/" + myFile.name);
+  }).fromString(myFile.data.toString('utf-8'));
 
   console.log(jsonArray);
-
-  try {
-    fs.unlinkSync("./routes/public/data/" + myFile.name);
-    console.error("removed");
-  } catch (err) {
-    console.error(err);
-  }
 
   return res.status(200).json({ jsonArray });
 });
