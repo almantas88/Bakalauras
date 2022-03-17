@@ -33,7 +33,7 @@ export default function ImportUserCsv(props) {
      let data = new FormData();
      data.append("myFile", file);
 
-     axios.post(url, data)
+     axios.post(`${url}/imports/userImport"`, data)
        .then((res) => console.log(res))
        .catch((e) => console.log(e));
   };
