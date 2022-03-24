@@ -24,7 +24,7 @@ export async function deleteBook(data) {
 }
 
 export async function getOneBook(data) {
-  const foundBook = await axios.post(`${apiUrl}/books/oneBook`, data);
+  const foundBook = await axios.get(`${apiUrl}/books/oneBook/${data}`);
   return foundBook;
 }
 

@@ -35,7 +35,7 @@ export default function UpdateBookForm(props) {
 
   const fetchBook = async (bookID) => {
     try {
-      const { data } = await getOneBook({ bookID });
+      const { data } = await getOneBook( bookID );
       setValues({
         bookID: data.book.bookID,
         title: data.book.title,

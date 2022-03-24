@@ -2,16 +2,38 @@ const router = require("express").Router();
 const auth = require("../middleware/auth");
 const Book = require("../models/book.model");
 const User = require("../models/user.model");
-const CsvUpload = require("express-fileupload");
-const multer = require("multer");
-const upload = multer({ dest: "./public/data/uploads/" });
 const csv = require("csvtojson");
-const fs = require("fs");
+var path = require("path");
 
 router.post("/userImport", async (req, res) => {
   const { myFile } = req.files;
-  //myFile.mv(__dirname + "/public/data/" + myFile.name);
-  console.log(myFile.data.toString('utf-8'));
+  console.log(myFile.data.toString("utf-8"));
+  console.log(myFile);
+
+  if (path.extname(myFile.name) !== ".csv")
+    return res.status(400).json({ msg: "Invalid file type" });
+
+  const jsonArray = await csv({
+    delimiter: ";",
+  }).fromString(myFile.data.toString("utf-8"));
+
+  //Check csv file header
+  if (
+    !jsonArray[0].hasOwnProperty("vardas") &&
+    !jsonArray[0].hasOwnProperty("pavarde") &&
+    !jsonArray[0].hasOwnProperty("klase")
+  ) {
+    console.log(!jsonArray[0].hasOwnProperty("vardas") &&
+    !jsonArray[0].hasOwnProperty("pavarde") &&
+    !jsonArray[0].hasOwnProperty("klase"))
+    return res
+      .status(400)
+      .json({ msg: "Kažkas blogai su csv failo formatavimu" });
+  }
+  console.log(jsonArray[0].hasOwnProperty("vardas"))
+  console.log(jsonArray);
+
+  return res.status(200).json({ jsonArray });
 
   //   var arrayToInsert = [];
   //   csv({
@@ -31,14 +53,6 @@ router.post("/userImport", async (req, res) => {
   //       }
   //       console.log(arrayToInsert);
   //     });
-
-  const jsonArray = await csv({
-    delimiter: ";",
-  }).fromString(myFile.data.toString('utf-8'));
-
-  console.log(jsonArray);
-
-  return res.status(200).json({ jsonArray });
 });
 
 module.exports = router;

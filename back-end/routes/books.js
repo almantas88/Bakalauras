@@ -59,9 +59,9 @@ router.get("/allBooks", auth, async (req, res) => {
   }
 });
 
-router.post("/oneBook", auth, async (req, res) => {
+router.get("/oneBook/:bookID", auth, async (req, res) => {
   try {
-    const foundBook = await Book.findOne({ bookID: req.body.bookID });
+    const foundBook = await Book.findOne({ bookID: req.params.bookID });
     if (!foundBook)
       return res.status(400).send({ msg: "Knyga neegzistuoja!" });
     return res.status(200).send({
@@ -71,6 +71,8 @@ router.post("/oneBook", auth, async (req, res) => {
     return res.status(500).json({ msg: error.message });
   }
 });
+
+
 
 router.put("/updateBook", auth, async (req, res) => {
   try {
