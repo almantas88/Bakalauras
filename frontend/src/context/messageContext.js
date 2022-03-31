@@ -12,22 +12,29 @@ export const MessageProvider = (props) => {
   };
 
   const handleMessageShow = (message, severity) => {
+    setOpen(true);
     setShowMessageBox(true);
     setMessage(message);
     setSeverity(severity);
   };
 
-  const values = [
-    message,
-    severity,
-    showMessageBox,
-    handleMessageShow,
-    closeError,
-  ];
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   return (
     <MessageContext.Provider
-      value={values}
+      value={{handleMessageShow, closeError, message, setMessage, showMessageBox, setShowMessageBox, severity, setSeverity, open, setOpen, handleClose}}
     >
       {props.children}
     </MessageContext.Provider>

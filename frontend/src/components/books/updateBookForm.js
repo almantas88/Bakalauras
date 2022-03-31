@@ -10,7 +10,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { BooksContext } from "../../context/booksContext";
 
 export default function UpdateBookForm(props) {
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
     const booksContext = useContext(BooksContext);
@@ -43,7 +43,7 @@ export default function UpdateBookForm(props) {
         description: data.book.description,
       });
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 
@@ -53,7 +53,7 @@ export default function UpdateBookForm(props) {
     try {
       fetchBook(props.bookInfo.bookID);
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
     setIsLoading(false);
   }, []);
@@ -64,10 +64,10 @@ export default function UpdateBookForm(props) {
     try {
       const { data } = await updateOneBook(values);
       booksContext.handleUpdateBookContext(values.bookID, values);
-      handleMessageShow("Knyga atnaujinta!", "success");
+      messageContext.handleMessageShow("Knyga atnaujinta!", "success");
     } catch (error) {
       console.log(error.response.data);
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 
@@ -92,7 +92,9 @@ export default function UpdateBookForm(props) {
               <h2>Atnaujinti knyga</h2>
             </Grid>
             <Grid item xs={2} onClick={props.handleChange}>
-              <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1 }} />
+              <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
+      color: "#69717d",
+    } }} />
             </Grid>
             <Grid item xs={12}>
               <TextField

@@ -10,7 +10,7 @@ import { GradesContext } from "../../context/gradesContext";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function AddUserForm(props) {
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
     const gradesContext =
@@ -45,7 +45,7 @@ export default function AddUserForm(props) {
   const handleSubmit = async () => {
     try {
       const { data } = await createNewUser(values);
-      handleMessageShow("Naujas vartotojas sukurtas!", "success");
+      messageContext.handleMessageShow("Naujas vartotojas sukurtas!", "success");
 
       props.setUsersList([
         {
@@ -60,7 +60,7 @@ export default function AddUserForm(props) {
       console.log(data);
     } catch (error) {
       console.log(error.response.data);
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 
@@ -82,7 +82,9 @@ export default function AddUserForm(props) {
             <h2>Pridėti vartotoją</h2>
           </Grid>
           <Grid item xs={2} onClick={props.handleChange}>
-            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1 }} />
+            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
+      color: "#69717d",
+    } }} />
           </Grid>
           <Grid item xs={12}>
             <h3>Vaiko duomenys</h3>

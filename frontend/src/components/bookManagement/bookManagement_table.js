@@ -3,7 +3,6 @@ import React, {
     memo,
     forwardRef,
     useImperativeHandle,
-    useContext,
   } from "react";
   import Paper from "@mui/material/Paper";
   import Table from "@mui/material/Table";
@@ -15,12 +14,7 @@ import React, {
   import TableRow from "@mui/material/TableRow";
   import { Button } from "@mui/material";
   import CircularProgress from "@mui/material/CircularProgress";
-  import { UsersContext } from "../../context/usersContext";
-  import Checkbox from "@mui/material/Checkbox";
-  import InfoAboutBookBox from "../books/infoAboutBook";
-  import DeleteBookConfirmation from "../books/deleteBookConfirmation";
-  import UpdateBookForm from '../books/updateBookForm';
-  import { BooksCartContext } from "../../context/booksCartContext";
+
   
   const columns = [
     {
@@ -43,24 +37,24 @@ import React, {
   const TableList = forwardRef((props, ref) => {
   
   
-    const [showBookInfo, setshowBookInfo] = useState(false);
-    const [bookInfo, setBookInfo] = useState({
-      bookID: "",
-      title: "",
-      author: "",
-    });
+    // const [showBookInfo, setshowBookInfo] = useState(false);
+    // const [bookInfo, setBookInfo] = useState({
+    //   bookID: "",
+    //   title: "",
+    //   author: "",
+    // });
   
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
   
-    const handleShowBookInfo = (row) => {
-      setBookInfo({
-        bookID: row.bookID,
-        title: row.title,
-        author: row.author,
-      });
-      showBookInfo ? setshowBookInfo(false) : setshowBookInfo(true);
-    };
+    // const handleShowBookInfo = (row) => {
+    //   setBookInfo({
+    //     bookID: row.bookID,
+    //     title: row.title,
+    //     author: row.author,
+    //   });
+    //   showBookInfo ? setshowBookInfo(false) : setshowBookInfo(true);
+    // };
   
     useImperativeHandle(ref, () => ({
       setToFirstPage,

@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { getUserBooks } from "../../services/studentsBooksServices";
 import { retrieveCurrentUserBooks } from "../../services/booksManagement";
 import UserBooksInfoTable from "./userBooksInfoTable";
+
 
 export default function InfoUser(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,11 +44,10 @@ export default function InfoUser(props) {
   return (
     <div className="addUserContainer">
       <Container
-        className="addUserForm"
         sx={{
           marginTop: 10,
           width: 550,
-          height: 670,
+          height: 650,
           backgroundColor: "#F5F5F5",
           borderRadius: 2,
         }}
@@ -60,7 +57,9 @@ export default function InfoUser(props) {
             <h2>Informaciją apie vartotoją</h2>
           </Grid>
           <Grid item xs={2} onClick={props.handleChange}>
-            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1 }} />
+            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
+      color: "#69717d",
+    } }} />
           </Grid>
           <Grid item xs={4}>
             <p><strong>Kortelės id:</strong></p>
@@ -82,7 +81,7 @@ export default function InfoUser(props) {
             <p><strong>Klasė</strong></p>
             <p>{values.grade}</p>
           </Grid>
-          <Grid align="center" item xs={12}>
+          <Grid sx={{}} align="center" item xs={12}>
             <UserBooksInfoTable rows={values.books} isLoading={isLoading}/>
           </Grid>
         </Grid>

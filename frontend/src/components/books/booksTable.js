@@ -3,7 +3,6 @@ import React, {
   memo,
   forwardRef,
   useImperativeHandle,
-  useContext,
 } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -15,8 +14,6 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Button } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import { UsersContext } from "../../context/usersContext";
-import Checkbox from "@mui/material/Checkbox";
 import InfoAboutBookBox from "../books/infoAboutBook";
 import DeleteBookConfirmation from "../books/deleteBookConfirmation";
 import UpdateBookForm from '../books/updateBookForm';

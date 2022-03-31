@@ -1,7 +1,6 @@
 import { createContext, useState, useContext } from "react";
 import { MessageContext } from "./messageContext";
 import {
-  retrieveCurrentUserBooks,
   giveOutBooks,
   returnBooks
 } from "../services/booksManagement";
@@ -11,7 +10,7 @@ import { UsersContext } from "../context/usersContext";
 export const BookManagementContext = createContext([]);
 
 export const BookManagementProvider = (props) => {
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
   const booksContext = useContext(BooksContext);
@@ -46,7 +45,7 @@ export const BookManagementProvider = (props) => {
     };
 
     if (selectedBooks.some((element) => element.bookID === values.bookID)) {
-      handleMessageShow("Ši knyga jau krepšelyje", "error");
+      messageContext.handleMessageShow("Ši knyga jau krepšelyje", "error");
     } else {
       setSelectedBooks([book, ...selectedBooks]);
     }
@@ -63,14 +62,14 @@ export const BookManagementProvider = (props) => {
     var idArray = filterOnlyID(selectedBooks);
     try {
       await giveOutBooks({cardID: currentUser.cardID, bookIDarr: idArray });
-      handleMessageShow("Pavyko išduoti knygas", "success");
+      messageContext.handleMessageShow("Pavyko išduoti knygas", "success");
       usersContext.handleUpdateUserBooksCountContext(currentUser.cardID, currentUser, "+", idArray.length);
       setSelectedBooks([]);
       setCurrentUser({});
       setCurrentUserBooks([]);
       
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 
@@ -78,13 +77,13 @@ export const BookManagementProvider = (props) => {
     var idArray = filterOnlyID(selectedBooks);
     try {
       await returnBooks({cardID: currentUser.cardID, bookIDarr: idArray });
-      handleMessageShow("Pavyko gražinti knygas", "success");
+      messageContext.handleMessageShow("Pavyko gražinti knygas", "success");
       usersContext.handleUpdateUserBooksCountContext(currentUser.cardID, currentUser, "-", idArray.length);
       setSelectedBooks([]);
       setCurrentUser({});
       setCurrentUserBooks([]);
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 

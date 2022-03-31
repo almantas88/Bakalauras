@@ -10,7 +10,7 @@ export default function DeleteUser(props) {
   const usersContext =
     useContext(UsersContext);
 
-    const [message, severity, showMessageBox, handleMessageShow, closeError] =
+    const messageContext =
     useContext(MessageContext);
 
   const handleDeleteUser = async () => {
@@ -20,11 +20,11 @@ export default function DeleteUser(props) {
       console.log({cardID});
       const { data } = await deleteUser({cardID: props.userInfo.cardID});
       usersContext.handleDeleteUserContext(props.userInfo.cardID);
-      handleMessageShow("Vartotojas buvo sėkmingai panaikintas!", "success");
+      messageContext.handleMessageShow("Vartotojas buvo sėkmingai panaikintas!", "success");
       props.closeConfirmation();
     } catch (error) {
       console.log(error.response.data);
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 

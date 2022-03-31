@@ -2,22 +2,11 @@ import React, { useState, useEffect } from "react";
 import MenuDrawer from "../components/menuDrawer";
 import { getCurrentUser } from "../services/authServices";
 import Grid from "@mui/material/Grid";
-
 import Card from "../components/settings/card";
-
 import imageHeaderGrade from "../public/images/Klase.jpg";
 import imageHeaderExcel from "../public/images/excel.jpg";
-
 import GradesSettings from "../components/settings/gradesSettings";
 import ImportUserCsv from "../components/settings/importUserCsv";
-
-const columns = [
-  { field: "bookID", headerName: "ID", width: 110 },
-  { field: "title", headerName: "Knygos pavadinimas", width: 430 },
-  { field: "author", headerName: "Autorius", width: 230 },
-  { field: "takeDate", headerName: "Paėmimo data", width: 230 },
-  { field: "returnDate", headerName: "Iki kada gražinti", width: 230 },
-];
 
 export default function StudentsPage() {
   //const [usersList, setUsersList] = useState([]);
@@ -51,14 +40,14 @@ export default function StudentsPage() {
 
   return (
     <div>
-      <MenuDrawer />
-      <h1 className="centerHeader">Nustatymų puslapis</h1>
+      <MenuDrawer page="Nustatymai"/>
       <Grid
         container
         direction="row"
         justifyContent="center"
         alignItems="center"
         spacing={10}
+        sx={{marginTop: 1}}
       >
         <Grid item>
           <Card

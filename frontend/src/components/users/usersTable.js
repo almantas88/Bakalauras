@@ -3,7 +3,6 @@ import React, {
   memo,
   forwardRef,
   useImperativeHandle,
-  useContext,
 } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -18,7 +17,6 @@ import InfoAboutUserBox from "./infoAboutUser";
 import DeleteUserConfirmation from "./deleteUserConfirmation";
 import UpdateUserForm from "./updateUserForm";
 import CircularProgress from "@mui/material/CircularProgress";
-import { UsersContext } from "../../context/usersContext";
 
 const columns = [
   {

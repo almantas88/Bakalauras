@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,13 +8,13 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { createNewGrade, deleteGrade } from "../../services/gradesServices";
+import { deleteGrade } from "../../services/gradesServices";
 import { MessageContext } from "../../context/messageContext";
 import CircularProgress from "@mui/material/CircularProgress";
 
 export default function BasicTable(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
   async function deleteGradeById(id) {
@@ -23,9 +23,9 @@ export default function BasicTable(props) {
       const { data } = await deleteGrade(id);
       console.log(data);
       props.filterGrades(id);
-      handleMessageShow(data.msg, "success");
+      messageContext.handleMessageShow(data.msg, "success");
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
     setIsLoading(false);
   }

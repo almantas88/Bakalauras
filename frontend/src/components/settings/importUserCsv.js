@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { MessageContext } from "../../context/messageContext";
 
@@ -13,7 +12,7 @@ const url = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 export default function ImportUserCsv(props) {
 
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
   useContext(MessageContext);
 
   const [file, setFile] = useState(null);
@@ -36,10 +35,10 @@ export default function ImportUserCsv(props) {
     await axios
       .post(`${url}/imports/userImport`, data)
       .then((res) => console.log(res))
-      .catch((e) => handleMessageShow("Kažkas nutiko blogai", "error"));
+      .catch((e) => messageContext.handleMessageShow("Kažkas nutiko blogai", "error"));
 
     props.handleChange();
-    handleMessageShow("Sėkmingai importuoti vartotojai", "success");
+    messageContext.handleMessageShow("Sėkmingai importuoti vartotojai", "success");
   };
 
   return (
@@ -58,7 +57,9 @@ export default function ImportUserCsv(props) {
             <h2>Mokinių importavimas</h2>
           </Grid>
           <Grid item xs={2} onClick={props.handleChange}>
-            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1 }} />
+            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
+      color: "#69717d",
+    } }} />
           </Grid>
           <Grid item xs={12}>
             {/* <input

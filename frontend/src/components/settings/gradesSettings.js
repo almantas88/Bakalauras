@@ -4,19 +4,18 @@ import Container from "@mui/material/Container";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { createNewUser } from "../../services/userServices";
+
 import { MessageContext } from "../../context/messageContext";
 import { GradesContext } from "../../context/gradesContext";
 import GradeTable from "./gradeTable";
 import {
   getGrades,
   createNewGrade,
-  deleteGrade,
 } from "../../services/gradesServices";
 
 
 export default function GradeSettings(props) {
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
     const gradesContext = useContext(GradesContext);
@@ -68,9 +67,9 @@ export default function GradeSettings(props) {
       console.log(data.newGrade);
 
       gradesContext.addGradeToFrontEnd(data.newGrade);
-      handleMessageShow(data.msg, "success");
+      messageContext.handleMessageShow(data.msg, "success");
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
     setIsLoading(false);
   }
@@ -92,7 +91,9 @@ export default function GradeSettings(props) {
             <h2>Redaguoti klases</h2>
           </Grid>
           <Grid item xs={2} onClick={props.handleChange}>
-            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1 }} />
+            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
+      color: "#69717d",
+    } }} />
           </Grid>
           <Grid item xs={12}>
             <h3>Pridėti klasę</h3>

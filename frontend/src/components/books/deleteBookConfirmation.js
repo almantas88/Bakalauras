@@ -10,17 +10,17 @@ export default function DeleteBook(props) {
   const booksContext =
     useContext(BooksContext);
 
-    const [message, severity, showMessageBox, handleMessageShow, closeError] =
+    const messageContext =
     useContext(MessageContext);
 
   const handleDeleteBook = async () => {
     try {
       const { data } = await deleteBook({bookID: props.bookInfo.bookID});
       booksContext.handleDeleteBookContext(props.bookInfo.bookID);
-      handleMessageShow("Knyga buvo sėkmingai panaikinta!", "success");
+      messageContext.handleMessageShow("Knyga buvo sėkmingai panaikinta!", "success");
       props.closeConfirmation();
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 

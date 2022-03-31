@@ -4,7 +4,7 @@ import {retrieveCurrentUserBooks} from "../services/booksManagement";
 export const BooksCartContext = createContext([]);
 
 export const BooksCartProvider = (props) => {
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
   const [action, setAction] = useState('');
@@ -40,7 +40,7 @@ export const BooksCartProvider = (props) => {
     };
 
     if (allBooksCartList.some((element) => element.bookID === values.bookID)) {
-      handleMessageShow("Ši knyga jau krepšelyje", "error");
+      messageContext.handleMessageShow("Ši knyga jau krepšelyje", "error");
     } else {
       setAllBooksCartListID([book._id, ...allBooksCartListID]);
       console.log("sarasas isiuntimui i back end turi but tik mongo id: ", allBooksCartListID);

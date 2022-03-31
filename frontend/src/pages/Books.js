@@ -49,8 +49,7 @@ export default function Books() {
 
   return (
     <div>
-      <MenuDrawer />
-      <h1 className="centerHeader">Knygos</h1>
+      <MenuDrawer page="knygos"/>
       <Button
         onClick={handleShowUserAddForm}
         className="addUser-btn"

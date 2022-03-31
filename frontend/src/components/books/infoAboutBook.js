@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import Container from "@mui/material/Container";
 import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import { getOneBook } from "../../services/bookServices";
 
 export default function InfoBook(props) {

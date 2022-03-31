@@ -1,20 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import MenuDrawer from "../components/menuDrawer";
-
 import { BooksContext } from "../context/booksContext";
 import { getCurrentUser } from "../services/authServices";
-
 import { getAllBooks } from "../services/bookServices";
 import { getAllUsers } from "../services/userServices";
-import { BooksCartContext } from "../context/booksCartContext";
 import UsersSearch from "../components/bookManagement/usersManagement_search";
 import { UsersContext } from "../context/usersContext";
-import { Button } from "@mui/material";
-
 import { BookManagementContext } from "../context/bookManagementContext";
 import Search from "../components/bookManagement/bookManagement_search";
-
 import { retrieveCurrentUserBooks } from "../services/booksManagement";
+
 export default function BooksManagement() {
   // const booksCartContext = useContext(BooksCartContext);
 
@@ -125,16 +120,15 @@ export default function BooksManagement() {
 
   return (
     <div>
-      <MenuDrawer />
+      <MenuDrawer page="Knygų išdavmas ir gražinimas" />
 
       {booksManagementContext.currentUser &&
       Object.keys(booksManagementContext.currentUser).length === 0 &&
       Object.getPrototypeOf(booksManagementContext.currentUser) ===
         Object.prototype ? (
-        <h1 className="centerHeader">Knygų išdavmas/gražinimas</h1>
+        <></>
       ) : (
         <>
-          <h1 className="centerHeader">Knygų išdavmas/gražinimas</h1>
           <h2 className="centerHeader">{`${booksManagementContext.currentUser.firstName} ${booksManagementContext.currentUser.lastName}, ${booksManagementContext.currentUser.grade} klasė`}</h2>
         </>
       )}

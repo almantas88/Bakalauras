@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 
 
 export default function UpdateUserForm(props) {
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
     
@@ -64,7 +64,7 @@ export default function UpdateUserForm(props) {
         passwordCheck: "",
       });
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 
@@ -74,7 +74,7 @@ export default function UpdateUserForm(props) {
     try {
       fetchUser(props.userInfo.cardID);
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
     setIsLoading(false);
   }, []);
@@ -86,10 +86,10 @@ export default function UpdateUserForm(props) {
     try {
       const { data } = await updateOneUser(values);    
       usersContext.handleUpdateUserContext(values.cardID, values);
-      handleMessageShow("Vartotojas atnaujintas!", "success");
+      messageContext.handleMessageShow("Vartotojas atnaujintas!", "success");
     } catch (error) {
       console.log(error.response.data);
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 
@@ -112,7 +112,9 @@ export default function UpdateUserForm(props) {
               <h2>Atnaujinti vartotoją</h2>
             </Grid>
             <Grid item xs={2} onClick={props.handleChange}>
-              <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1 }} />
+              <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
+      color: "#69717d",
+    } }} />
             </Grid>
             <Grid item xs={12}>
               <TextField

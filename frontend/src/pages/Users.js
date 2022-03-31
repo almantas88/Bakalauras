@@ -51,8 +51,7 @@ export default function Users() {
 
   return (
     <div>
-      <MenuDrawer />
-      <h1 className="centerHeader">Vartotojai</h1>
+      <MenuDrawer page="Vartotojai"/>
       <Button
         onClick={handleShowUserAddForm}
         className="addUser-btn"

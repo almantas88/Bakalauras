@@ -8,15 +8,7 @@ import { createNewBook } from "../../services/bookServices";
 import { MessageContext } from "../../context/messageContext";
 
 export default function AddBookForm(props) {
-  const [
-    error,
-    setError,
-    showError,
-    setShowError,
-    severity,
-    setSeverity,
-    closeError,
-  ] = useContext(MessageContext);
+  const messageContext = useContext(MessageContext);
 
   const [values, setValues] = useState({
     bookID: "",
@@ -37,9 +29,7 @@ export default function AddBookForm(props) {
   const handleSubmit = async () => {
     try {
       const { data } = await createNewBook(values);
-      setSeverity("success");
-      setError("Naujas knyga sukurta!");
-      setShowError(true);
+      messageContext.handleMessageShow("Naujas knyga sukurta!", "success");
       try {
         props.setBooksList([
           {
@@ -51,14 +41,10 @@ export default function AddBookForm(props) {
           ...props.booksList,
         ]);
       } catch (error) {
-        setSeverity("error");
-        setError("Ups... Kažkas nutiko negerai...");
-        setShowError(true);
+        messageContext.handleMessageShow("Ups... Kažkas nutiko negerai...","error");
       }
     } catch (error) {
-      setSeverity("error");
-      setError(error.response.data.msg);
-      setShowError(true);
+      messageContext.handleMessageShow(error.response.data.msg,"error");
     }
   };
 
@@ -78,7 +64,9 @@ export default function AddBookForm(props) {
             <h2>Pridėti knygą</h2>
           </Grid>
           <Grid item xs={2} onClick={props.handleChange}>
-            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1 }} />
+            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
+      color: "#69717d",
+    } }} />
           </Grid>
           <Grid item xs={12}>
             <h3>Knygos duomenys</h3>

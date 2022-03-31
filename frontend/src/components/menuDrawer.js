@@ -12,12 +12,12 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import ListIcon from "@mui/icons-material/List";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getCurrentUser } from "../services/authServices";
 import { logout } from "../services/authServices";
 import SettingsIcon from '@mui/icons-material/Settings';
 
-export default function TemporaryDrawer() {
+export default function TemporaryDrawer(props) {
   const [state, setState] = React.useState({
     left: false,
   });
@@ -119,6 +119,7 @@ export default function TemporaryDrawer() {
         <Button id="menu-btn" onClick={toggleDrawer("left", true)}>
           <ListIcon className="menu-icon" /> Meniu
         </Button>
+        <p className="page">/ {props.page}</p>
         <Drawer
           anchor={"left"}
           open={state["left"]}
@@ -128,10 +129,10 @@ export default function TemporaryDrawer() {
         </Drawer>
       </React.Fragment>
       
-      <Link className="link" to="/">
-        <h1 id="logo-img"> Bibliotekos sitema(logo)</h1>
+      <Link className="link" to="/users">
+        <h1 id="logo-img">(logo)</h1>
       </Link>
-      {user ? <h3 className="userName">{getFullNameCapitalized(user.firstName, user.firstName)}</h3> : null }
+      {user ? <p className="userName">{getFullNameCapitalized(user.firstName, user.firstName)}</p> : null }
     </div>
   );
 }

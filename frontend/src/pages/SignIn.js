@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,13 +12,13 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import ImageLogo from "../public/images/be-fono-logo.png";
 import { login } from "../services/authServices";
-import FlashMessage from "../components/flashMessage";
+
 import { MessageContext } from "../context/messageContext";
 
 const theme = createTheme();
 
 export default function SignInSide() {
-  const [message, severity, showMessageBox, handleMessageShow, closeError] =
+  const messageContext =
     useContext(MessageContext);
 
   const handleSubmit = (event) => {
@@ -32,9 +32,9 @@ export default function SignInSide() {
       //await login({ email, password });
       const { data } = await login({ email, password });
       console.log(data);
-      handleMessageShow("Pavyko prisijungti", "success");
+      messageContext.handleMessageShow("Pavyko prisijungti", "success");
       setTimeout(() => {
-        closeError();
+        messageContext.closeError();
         if (data.user.role === "ADMIN") {
           window.location = "/users";
         } else if (data.user.role === "STUDENT") {
@@ -42,7 +42,7 @@ export default function SignInSide() {
         }
       }, 500);
     } catch (error) {
-      handleMessageShow(error.response.data.msg, "error");
+      messageContext.handleMessageShow(error.response.data.msg, "error");
     }
   };
 
