@@ -33,16 +33,45 @@ export default function UpdateUserForm(props) {
     email: "",
     password: "",
     passwordCheck: "",
+    initialCardID: props.userInfo.cardID
+  });
+
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    cardID: "",
+    grade: "",
+    email: "",
+    password: "",
+    passwordCheck: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+    //setErrors({ ...errors, [name]: "" });
     setValues({
       ...values,
       [name]: value,
     });
+    validate(name, value);
+    checkIfAllFilled()
   };
+
+  const validate = (name, value) => {
+    let temp = {};
+    if (name === "email") {
+      temp.email = /$|.+@.+..+/.test(value) ? "" : "El. paštas yra netinkamas";
+      setErrors({ ...errors, [name]: temp.email });
+    } else {
+      temp.name = value ? "" : "Šis laukas yra privalomas";
+      setErrors({ ...errors, [name]: temp.name });
+    }
+  };
+
+  const checkIfAllFilled = () => {
+    console.log(values.cardID !== "" && values.firstName !== "" && values.lastName !== "");
+    if(values.cardID !== "" && values.firstName !== "" && values.lastName !== "") {return false} else {return true}
+  }
 
   const handleChange = (event) => {
     setValues({
@@ -62,6 +91,7 @@ export default function UpdateUserForm(props) {
         email: data.user.email,
         password: "",
         passwordCheck: "",
+        initialCardID: props.userInfo.cardID
       });
     } catch (error) {
       messageContext.handleMessageShow(error.response.data.msg, "error");
@@ -85,8 +115,12 @@ export default function UpdateUserForm(props) {
   const handleSubmit = async () => {
     try {
       const { data } = await updateOneUser(values);    
-      usersContext.handleUpdateUserContext(values.cardID, values);
+      usersContext.handleUpdateUserContext(values.initialCardID, values);
       messageContext.handleMessageShow("Vartotojas atnaujintas!", "success");
+      setValues({
+        ...values,
+        initialCardID: values.cardID,
+      });
     } catch (error) {
       console.log(error.response.data);
       messageContext.handleMessageShow(error.response.data.msg, "error");
@@ -123,7 +157,8 @@ export default function UpdateUserForm(props) {
                 onChange={handleInputChange}
                 fullWidth
                 required
-                disabled
+                error={Boolean(errors?.cardID)}
+              helperText={errors?.cardID}
                 autoComplete="disabled"
                 label="Kortelės id"
                 variant="outlined"
@@ -139,6 +174,8 @@ export default function UpdateUserForm(props) {
                 autoComplete="disabled"
                 label="Vardas"
                 variant="outlined"
+                error={Boolean(errors?.firstName)}
+                helperText={errors?.firstName}
               />
             </Grid>
             <Grid item xs={6}>
@@ -151,6 +188,8 @@ export default function UpdateUserForm(props) {
                 autoComplete="disabled"
                 label="Pavardė"
                 variant="outlined"
+                error={Boolean(errors?.lastName)}
+              helperText={errors?.lastName}
               />
             </Grid>
             <Grid item xs={12}>

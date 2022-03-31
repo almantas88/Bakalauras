@@ -10,11 +10,10 @@ import { GradesContext } from "../../context/gradesContext";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function AddUserForm(props) {
-  const messageContext =
-    useContext(MessageContext);
+  const messageContext = useContext(MessageContext);
 
-    const gradesContext =
-    useContext(GradesContext);
+  const gradesContext = useContext(GradesContext);
+
 
   const [values, setValues] = useState({
     firstName: "",
@@ -26,13 +25,36 @@ export default function AddUserForm(props) {
     passwordCheck: "",
   });
 
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    cardID: "",
+    grade: "",
+    email: "",
+    password: "",
+    passwordCheck: "",
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-
+    //setErrors({ ...errors, [name]: "" });
     setValues({
       ...values,
       [name]: value,
     });
+    validate(name, value);
+    checkIfAllFilled()
+  };
+
+  const validate = (name, value) => {
+    let temp = {};
+    if (name === "email") {
+      temp.email = /$|.+@.+..+/.test(value) ? "" : "El. paštas yra netinkamas";
+      setErrors({ ...errors, [name]: temp.email });
+    } else {
+      temp.name = value ? "" : "Šis laukas yra privalomas";
+      setErrors({ ...errors, [name]: temp.name });
+    }
   };
 
   const handleChange = (event) => {
@@ -42,10 +64,19 @@ export default function AddUserForm(props) {
     });
   };
 
+  const checkIfAllFilled = () => {
+    console.log(values.cardID !== "" && values.firstName !== "" && values.lastName !== "");
+    if(values.cardID !== "" && values.firstName !== "" && values.lastName !== "") {return false} else {return true}
+  }
+
   const handleSubmit = async () => {
+
     try {
       const { data } = await createNewUser(values);
-      messageContext.handleMessageShow("Naujas vartotojas sukurtas!", "success");
+      messageContext.handleMessageShow(
+        "Naujas vartotojas sukurtas!",
+        "success"
+      );
 
       props.setUsersList([
         {
@@ -53,7 +84,7 @@ export default function AddUserForm(props) {
           cardID: values.cardID,
           firstName: values.firstName,
           lastName: values.lastName,
-          booksLength: 0
+          booksLength: 0,
         },
         ...props.usersList,
       ]);
@@ -64,14 +95,12 @@ export default function AddUserForm(props) {
     }
   };
 
-
-
   return (
     <div className="addUserContainer">
       <Container
         sx={{
           width: 500,
-          height: 710,
+
           marginTop: "110px",
           backgroundColor: "#F5F5F5",
           borderRadius: "1%",
@@ -82,9 +111,16 @@ export default function AddUserForm(props) {
             <h2>Pridėti vartotoją</h2>
           </Grid>
           <Grid item xs={2} onClick={props.handleChange}>
-            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
-      color: "#69717d",
-    } }} />
+            <CloseIcon
+              sx={{
+                fontSize: 40,
+                color: "#252525",
+                padding: 1,
+                "&:hover": {
+                  color: "#69717d",
+                },
+              }}
+            />
           </Grid>
           <Grid item xs={12}>
             <h3>Vaiko duomenys</h3>
@@ -96,6 +132,8 @@ export default function AddUserForm(props) {
               onChange={handleInputChange}
               fullWidth
               required
+              error={Boolean(errors?.cardID)}
+              helperText={errors?.cardID}
               autoComplete="disabled"
               label="Kortelės id"
               variant="outlined"
@@ -111,6 +149,8 @@ export default function AddUserForm(props) {
               autoComplete="disabled"
               label="Vardas"
               variant="outlined"
+              error={Boolean(errors?.firstName)}
+              helperText={errors?.firstName}
             />
           </Grid>
           <Grid item xs={6}>
@@ -123,14 +163,16 @@ export default function AddUserForm(props) {
               autoComplete="disabled"
               label="Pavardė"
               variant="outlined"
+              error={Boolean(errors?.lastName)}
+              helperText={errors?.lastName}
             />
           </Grid>
           <Grid item xs={12}>
-          <TextField
-            fullWidth
+            <TextField
+              fullWidth
               id="outlined-select-currency"
               select
-              inputProps={{MenuProps: {disableScrollLock: true}}}
+              inputProps={{ MenuProps: { disableScrollLock: true } }}
               label="Klasė"
               value={values.grade}
               onChange={handleChange}
@@ -151,7 +193,6 @@ export default function AddUserForm(props) {
               value={values.email}
               onChange={handleInputChange}
               fullWidth
-              required
               autoComplete="disabled"
               label="El. paštas"
               variant="outlined"
@@ -163,7 +204,6 @@ export default function AddUserForm(props) {
               value={values.password}
               onChange={handleInputChange}
               fullWidth
-              required
               type="password"
               autoComplete="disabled"
               label="Slaptažodis"
@@ -176,7 +216,6 @@ export default function AddUserForm(props) {
               value={values.passwordCheck}
               onChange={handleInputChange}
               fullWidth
-              required
               autoComplete="disabled"
               type="password"
               label="Pakartotas slaptažodis"
@@ -189,6 +228,7 @@ export default function AddUserForm(props) {
               size="large"
               variant="contained"
               sx={{ padding: 1, width: "50%", margin: "20px 0" }}
+              disabled={checkIfAllFilled()}
             >
               Pridėti
             </Button>

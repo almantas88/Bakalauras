@@ -251,13 +251,13 @@ router.post("/oneUserWithAllBooks", async (req, res) => {
 router.put("/updateUser", auth, async (req, res) => {
   try {
     console.log(req.body);
-    let { email, firstName, lastName, cardID, grade, password, passwordCheck } =
+    let {initialCardID ,email, firstName, lastName, cardID, grade, password, passwordCheck } =
       req.body;
 
     if (!email || !firstName || !lastName || !cardID || !grade) {
       return res.status(400).json({ msg: "Ne visi laukai buvo užpildyti." });
     }
-    const foundUser = await User.findOne({ cardID: req.body.cardID });
+    const foundUser = await User.findOne({ cardID: req.body.initialCardID });
     if (!foundUser)
       return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
 
@@ -284,7 +284,7 @@ router.put("/updateUser", auth, async (req, res) => {
     }
 
     const updatedUser = await User.findOneAndUpdate(
-      { cardID: req.body.cardID },
+      { cardID: req.body.initialCardID },
       newUserInfo
     );
 

@@ -22,6 +22,14 @@ export default function UpdateBookForm(props) {
     title: "",
     author: "",
     description: "",
+    initialBookID: props.bookInfo.bookID
+  });
+
+  const [errors, setErrors] = useState({
+    bookID: "",
+    title: "",
+    author: "",
+    description: "",
   });
 
   const handleInputChange = (e) => {
@@ -31,6 +39,25 @@ export default function UpdateBookForm(props) {
       ...values,
       [name]: value,
     });
+
+    validate(name, value);
+    checkIfAllFilled()
+  };
+
+  const checkIfAllFilled = () => {
+    console.log(values.title !== "" && values.author !== "" && values.bookID !== "");
+    if(values.title !== "" && values.author !== "" && values.bookID !== "") {return false} else {return true}
+  }
+
+  const validate = (name, value) => {
+    let temp = {};
+    if (name === "email") {
+      temp.email = /$|.+@.+..+/.test(value) ? "" : "El. paštas yra netinkamas";
+      setErrors({ ...errors, [name]: temp.email });
+    } else {
+      temp.name = value ? "" : "Šis laukas yra privalomas";
+      setErrors({ ...errors, [name]: temp.name });
+    }
   };
 
   const fetchBook = async (bookID) => {
@@ -41,6 +68,7 @@ export default function UpdateBookForm(props) {
         title: data.book.title,
         author: data.book.author,
         description: data.book.description,
+        initialBookID: props.bookInfo.bookID
       });
     } catch (error) {
       messageContext.handleMessageShow(error.response.data.msg, "error");
@@ -63,8 +91,13 @@ export default function UpdateBookForm(props) {
   const handleSubmit = async () => {
     try {
       const { data } = await updateOneBook(values);
-      booksContext.handleUpdateBookContext(values.bookID, values);
+      booksContext.handleUpdateBookContext(values.initialBookID, values);
       messageContext.handleMessageShow("Knyga atnaujinta!", "success");
+      setValues({
+        ...values,
+        initialBookID: values.bookID,
+      });
+  
     } catch (error) {
       console.log(error.response.data);
       messageContext.handleMessageShow(error.response.data.msg, "error");
@@ -99,7 +132,6 @@ export default function UpdateBookForm(props) {
             <Grid item xs={12}>
               <TextField
                 name="bookID"
-                disabled
                 value={values.bookID}
                 onChange={handleInputChange}
                 fullWidth
@@ -107,6 +139,8 @@ export default function UpdateBookForm(props) {
                 autoComplete="disabled"
                 label="Knygos id"
                 variant="outlined"
+                error={Boolean(errors?.bookID)}
+                helperText={errors?.bookID}
               />
             </Grid>
             <Grid item xs={12}>
@@ -119,6 +153,8 @@ export default function UpdateBookForm(props) {
                 autoComplete="disabled"
                 label="Knygos pavadinimas"
                 variant="outlined"
+                error={Boolean(errors?.title)}
+              helperText={errors?.title}
               />
             </Grid>
             <Grid item xs={12}>
@@ -131,6 +167,8 @@ export default function UpdateBookForm(props) {
                 autoComplete="disabled"
                 label="Autorius"
                 variant="outlined"
+                error={Boolean(errors?.author)}
+              helperText={errors?.author}
               />
             </Grid>
             <Grid item xs={12}>
@@ -156,6 +194,7 @@ export default function UpdateBookForm(props) {
                 size="large"
                 variant="contained"
                 sx={{ padding: 1, width: "50%", margin: "20px 0" }}
+                disabled={checkIfAllFilled()}
               >
                 Redaguoti
               </Button>

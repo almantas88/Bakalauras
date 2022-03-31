@@ -90,9 +90,10 @@ export default function Search(props) {
       <Container sx={{ overflow: "hidden", width: "95%" }}>
         <h3>Paieška:</h3>
         <Grid container spacing={1}>
-          <Grid item xs={2.5}>
+          <Grid item xs={12} md={3}>
             <TextField
               fullWidth
+              size="small"
               value={searchTextTitle}
               onChange={(event) => {
                 handleChangeTitle(event.target.value);
@@ -103,9 +104,10 @@ export default function Search(props) {
               autoComplete="disabled"
             />
           </Grid>
-          <Grid item xs={2.5}>
+          <Grid item xs={12} md={3}>
             <TextField
               fullWidth
+              size="small"
               value={searchTextBookId}
               onChange={(event) => {
                 handleChangeBookID(event.target.value);
@@ -116,9 +118,10 @@ export default function Search(props) {
               autoComplete="disabled"
             />
           </Grid>
-          <Grid item xs={2.5}>
+          <Grid item xs={12} md={3}>
             <TextField
               fullWidth
+              size="small"
               value={searchTextAuthor}
               onChange={(event) => {
                 handleChangeAuthor(event.target.value);
@@ -130,7 +133,7 @@ export default function Search(props) {
             />
           </Grid>
 
-          <Grid item xs={2.5}>
+          <Grid item xs={12} md={3}>
             <Button
               sx={{
                 height: "100%",
@@ -138,7 +141,7 @@ export default function Search(props) {
               fullWidth
               autoComplete="disabled"
               variant="contained"
-              size="large"
+              size="medium"
               startIcon={<SearchIcon />}
               onClick={() => {
                 handleSearchButton();
@@ -148,22 +151,22 @@ export default function Search(props) {
             </Button>
           </Grid>
 
-          <Grid item xs={2}>
+          <Grid item xs={12} md={3}>
             <Button
               sx={{
                 height: "100%",
               }}
               variant="contained"
-              size="large"
+              size="medium"
               fullWidth
               startIcon={<DeleteOutlineIcon />}
               onClick={() => {
                 handleClearButton();
               }}
             >
-              Išvalyti
+           Išvalyti
             </Button>
-          </Grid>
+          </Grid>   
         </Grid>
       </Container>
 

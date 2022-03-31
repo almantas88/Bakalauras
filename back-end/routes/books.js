@@ -77,13 +77,13 @@ router.get("/oneBook/:bookID", auth, async (req, res) => {
 router.put("/updateBook", auth, async (req, res) => {
   try {
     console.log(req.body);
-    let { bookID, title, author, description } =
+    let { bookID, title, author, description, initialBookID } =
       req.body;
 
     if (!bookID || !title || !author) {
       return res.status(400).json({ msg: "Ne visi laukai buvo užpildyti." });
     }
-    const foundBook = await Book.findOne({ bookID: req.body.bookID });
+    const foundBook = await Book.findOne({ bookID: req.body.initialBookID });
     if (!foundBook)
       return res.status(400).send({ msg: "Knyga neegzistuoja" });
 
@@ -95,7 +95,7 @@ router.put("/updateBook", auth, async (req, res) => {
     };
 
     const updatedBook = await Book.findOneAndUpdate(
-      { bookID: req.body.bookID },
+      { bookID: req.body.initialBookID },
       newBookInfo
     );
 

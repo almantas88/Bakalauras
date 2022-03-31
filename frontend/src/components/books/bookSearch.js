@@ -76,10 +76,11 @@ export default function BookSearch(props) {
     <>
       <Container sx={{ overflow: "hidden", width: "95%" }}>
         <h3>Paieška:</h3>
-        <Grid container spacing={2}>
-          <Grid item xs={4}>
+        <Grid container spacing={1}>
+          <Grid item xs={6} md={4}>
             <TextField
               fullWidth
+              size="small"
               value={searchTextTitle}
               onChange={(event) => {
                 handleChangeTitle(event.target.value);
@@ -90,9 +91,10 @@ export default function BookSearch(props) {
               autoComplete="disabled"
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6} md={4}>
             <TextField
               fullWidth
+              size="small"
               value={searchTextBookId}
               onChange={(event) => {
                 handleChangeBookID(event.target.value);
@@ -103,9 +105,10 @@ export default function BookSearch(props) {
               autoComplete="disabled"
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} md={4}>
             <TextField
               fullWidth
+              size="small"
               value={searchTextAuthor}
               onChange={(event) => {
                 handleChangeAuthor(event.target.value);
@@ -136,11 +139,11 @@ export default function BookSearch(props) {
         </Grid>
         <Grid
           container
-          spacing={2}
+          spacing={1}
           justifyContent="flex-end"
-          sx={{ marginTop: 1 }}
+          sx={{ marginTop: 0.5 }}
         >
-          <Grid alignItems={"right"} item xs={3}>
+          <Grid alignItems={"right"} item xs={12} md={3}>
             <Button
               sx={{
                 height: "100%",
@@ -148,7 +151,7 @@ export default function BookSearch(props) {
               fullWidth
               autoComplete="disabled"
               variant="contained"
-              size="large"
+              size="medium"
               startIcon={<SearchIcon />}
               onClick={() => {
                 handleSearchButton();
@@ -158,13 +161,13 @@ export default function BookSearch(props) {
             </Button>
           </Grid>
 
-          <Grid item xs={3}>
+          <Grid item xs={12} md={3}>
             <Button
               sx={{
                 height: "100%",
               }}
               variant="contained"
-              size="large"
+              size="medium"
               fullWidth
               startIcon={<DeleteOutlineIcon />}
               onClick={() => {
