@@ -14,7 +14,6 @@ html, body{
   '"Apple Color Emoji"',
   '"Segoe UI Emoji"',
   '"Segoe UI Symbol"';
-
 }
 
 .link {
@@ -162,4 +161,16 @@ html, body{
   font-size: 20px;
   color: white;
   max-width: 300px;
+}
+
+h1 {
+  font-size: 1rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1rem;
 }
