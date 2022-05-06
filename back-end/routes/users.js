@@ -20,23 +20,15 @@ router.post("/register", auth, async (req, res) => {
       role,
     } = req.body;
     // validate
-    if (
-      !email ||
-      !password ||
-      !passwordCheck ||
-      !firstName ||
-      !lastName ||
-      !cardID ||
-      !grade
-    ) {
+    if (!firstName || !lastName || !cardID || !grade) {
       console.log(email, password, passwordCheck, firstName, lastName, cardID);
       return res.status(400).json({ msg: "Ne visi laukai buvo užpildyti." });
     }
-    if (password.length < 5)
+    if (password && password.length < 5)
       return res
         .status(400)
         .json({ msg: "Slaptažodis turi būti bent 5 raidžių ilgio." });
-    if (password !== passwordCheck)
+    if (password && passwordCheck && password !== passwordCheck)
       return res.status(400).json({ msg: "Slaptažodžiai nesutampa." });
 
     const existingCardID = await User.findOne({ cardID: cardID });
@@ -45,23 +37,36 @@ router.post("/register", auth, async (req, res) => {
         .status(400)
         .json({ msg: "Vartotojas su tokiu kortelės ID jau egzistuoja." });
 
-    const existingUser = await User.findOne({ email: email });
-    if (existingUser)
-      return res
-        .status(400)
-        .json({ msg: "Vartotojas su tokiu el. paštu jau egzistuoja." });
+    if (email) {
+      const existingUser = await User.findOne({ email: email });
+      if (existingUser)
+        return res
+          .status(400)
+          .json({ msg: "Vartotojas su tokiu el. paštu jau egzistuoja." });
+    }
+    var newUser;
+    if (email && password) {
+      const salt = await bcrypt.genSalt();
+      const passwordHash = await bcrypt.hash(password, salt);
+      newUser = new User({
+        email,
+        password: passwordHash,
+        firstName,
+        lastName,
+        cardID,
+        grade,
+        role,
+      });
+    } else {
+      newUser = new User({
+        firstName,
+        lastName,
+        cardID,
+        grade,
+        role,
+      });
+    }
 
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-    const newUser = new User({
-      email,
-      password: passwordHash,
-      firstName,
-      lastName,
-      cardID,
-      grade,
-      role,
-    });
     const savedUser = await newUser.save();
     res.status(200).json({ msg: "Vartotojas sukurtas!" });
   } catch (err) {
@@ -96,7 +101,7 @@ router.post("/login", async (req, res) => {
         role: user.role,
         grade: user.grade,
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET, { expiresIn: '8h' }
     );
     res.status(200).send({
       token,
@@ -164,7 +169,7 @@ router.get("/allUsers", auth, async (req, res) => {
       { $match: { role: { $ne: "ADMIN" } } },
       {
         $project: {
-          _id:1,
+          _id: 1,
           email: 1,
           firstName: 1,
           lastName: 1,
@@ -204,41 +209,40 @@ router.post("/oneUser", async (req, res) => {
 
 router.post("/oneUserWithAllBooks", async (req, res) => {
   console.log(req.body);
-  
+
   try {
     var user = {};
-    const foundUser = await User.findOne({ cardID: req.body.cardID }).populate(
-      
-      { path: "books.bookId" }
-    );
+    const foundUser = await User.findOne({ cardID: req.body.cardID }).populate({
+      path: "books.bookId",
+    });
     if (!foundUser)
       return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
 
-      user = {
-        _id: foundUser._id,
-        email: foundUser.email,
-        firstName: foundUser.firstName,
-        lastName: foundUser.lastName,
-        cardID: foundUser.cardID,
-        role: foundUser.role,
-        grade: foundUser.grade
-      }
+    user = {
+      _id: foundUser._id,
+      email: foundUser.email,
+      firstName: foundUser.firstName,
+      lastName: foundUser.lastName,
+      cardID: foundUser.cardID,
+      role: foundUser.role,
+      grade: foundUser.grade,
+    };
 
-      console.log(foundUser);
-      var bookArr = [];
-      foundUser.books.forEach(element => {
-        console.log(element);
-        bookArr.push({
-          _id: element.bookId._id,
-          title: element.bookId.title,
-          author: element.bookId.author,
-          description: element.bookId.description,      
-          bookID: element.bookId.bookID,
-        })
+    console.log(foundUser);
+    var bookArr = [];
+    foundUser.books.forEach((element) => {
+      console.log(element);
+      bookArr.push({
+        _id: element.bookId._id,
+        title: element.bookId.title,
+        author: element.bookId.author,
+        description: element.bookId.description,
+        bookID: element.bookId.bookID,
       });
-      // man atroDo čia reikia formuoti duomenis
+    });
+    // man atroDo čia reikia formuoti duomenis
 
-      user.books = bookArr;
+    user.books = bookArr;
 
     return res.status(200).send({
       user: user,
@@ -251,24 +255,49 @@ router.post("/oneUserWithAllBooks", async (req, res) => {
 router.put("/updateUser", auth, async (req, res) => {
   try {
     console.log(req.body);
-    let {initialCardID ,email, firstName, lastName, cardID, grade, password, passwordCheck } =
-      req.body;
+    let {
+      initialCardID,
+      email,
+      firstName,
+      lastName,
+      cardID,
+      grade,
+      password,
+      passwordCheck,
+    } = req.body;
 
-    if (!email || !firstName || !lastName || !cardID || !grade) {
+    if (!firstName || !lastName || !cardID || !grade) {
       return res.status(400).json({ msg: "Ne visi laukai buvo užpildyti." });
     }
     const foundUser = await User.findOne({ cardID: req.body.initialCardID });
     if (!foundUser)
       return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
 
-    const newUserInfo = {
-      email,
-      firstName,
-      lastName,
-      cardID,
-      grade,
-    };
+    var newUserInfo;
+    if (foundUser.email === email) {
+      newUserInfo = {
+        firstName,
+        lastName,
+        cardID,
+        grade,
+      };
+    } else if (email) {
+      const foundUserEmail = await User.findOne({ email: email });
+      if (foundUserEmail)
+        return res
+          .status(400)
+          .send({ msg: "Vartotojas su tokiu el. paštu egzistuoja" });
 
+      newUserInfo = {
+        email,
+        firstName,
+        lastName,
+        cardID,
+        grade,
+      };
+    }
+
+    //Patikrina ar išviso yra slaptažodis, nes gali jo ir neupdatinti
     if (password && passwordCheck) {
       if (password !== passwordCheck) {
         return res.status(400).json({ msg: "Slaptažodžiai nesutampa." });
