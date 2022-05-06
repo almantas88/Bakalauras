@@ -11,9 +11,7 @@ import { FileUploader } from "react-drag-drop-files";
 const url = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 export default function ImportUserCsv(props) {
-
-  const messageContext =
-  useContext(MessageContext);
+  const messageContext = useContext(MessageContext);
 
   const [file, setFile] = useState(null);
   const fileTypes = ["CSV"];
@@ -34,11 +32,22 @@ export default function ImportUserCsv(props) {
 
     await axios
       .post(`${url}/imports/userImport`, data)
-      .then((res) => console.log(res))
-      .catch((e) => messageContext.handleMessageShow("Kažkas nutiko blogai", "error"));
+      .then((res) =>
+        messageContext.handleMessageShow(
+          "Sėkmingai importuoti vartotojai",
+          "success"
+        )
+      )
+      .catch((e) => {
+        console.log(e);
+        messageContext.handleMessageShow(
+          "Importavimas nepavyko, patikrinkite duomenis",
+          "error"
+        );
+      });
 
     props.handleChange();
-    messageContext.handleMessageShow("Sėkmingai importuoti vartotojai", "success");
+    //messageContext.handleMessageShow("Sėkmingai importuoti vartotojai", "success");
   };
 
   return (
@@ -57,9 +66,16 @@ export default function ImportUserCsv(props) {
             <h2>Mokinių importavimas</h2>
           </Grid>
           <Grid item xs={2} onClick={props.handleChange}>
-            <CloseIcon sx={{ fontSize: 40, color: "#252525", padding: 1, '&:hover': {
-      color: "#69717d",
-    } }} />
+            <CloseIcon
+              sx={{
+                fontSize: 40,
+                color: "#252525",
+                padding: 1,
+                "&:hover": {
+                  color: "#69717d",
+                },
+              }}
+            />
           </Grid>
           <Grid item xs={12}>
             {/* <input

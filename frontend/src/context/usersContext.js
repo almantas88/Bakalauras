@@ -20,6 +20,7 @@ export const UsersProvider = (props) => {
         lastName: values.lastName,
         cardID: values.cardID,
         grade: values.grade,
+        booksLength: 0
       },
       ...userListAfterUpdate,
     ]);

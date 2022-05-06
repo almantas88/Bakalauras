@@ -7,6 +7,7 @@ import imageHeaderGrade from "../public/images/Klase.jpg";
 import imageHeaderExcel from "../public/images/excel.jpg";
 import GradesSettings from "../components/settings/gradesSettings";
 import ImportUserCsv from "../components/settings/importUserCsv";
+import CSVfile from "../public/Importavimo-sablonas.csv"
 
 export default function StudentsPage() {
   //const [usersList, setUsersList] = useState([]);
@@ -63,7 +64,9 @@ export default function StudentsPage() {
             description="Didelio kiekio mokinių impotavimas naudojant excel csv formato failą."
             imageHeader={imageHeaderExcel}
             handleChange={handleShowUserCsvImport}
+            download = {CSVfile}
           />
+          
         </Grid>
 
         <Grid item>

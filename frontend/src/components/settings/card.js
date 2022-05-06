@@ -27,6 +27,7 @@ export default function MediaCard(props) {
       </CardContent>
       <CardActions>
         <Button onClick={props.handleChange} size="small">Tvarkyti</Button>
+        {props.download ? <Button size="small"><a href={props.download} download>Atsisiųsti šabloną</a></Button> : null}
       </CardActions>
     </Card>
   );
