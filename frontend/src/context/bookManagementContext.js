@@ -36,12 +36,14 @@ export const BookManagementProvider = (props) => {
   };
 
   const handleAddBook = (values) => {
+    console.log(values);
     const book = {
       _id: values._id,
       bookID: values.bookID,
       title: values.title,
       author: values.author,
       description: values.description,
+      returnDate: new Date("2022-01-01")
     };
 
     if (selectedBooks.some((element) => element.bookID === values.bookID)) {
@@ -88,8 +90,21 @@ export const BookManagementProvider = (props) => {
   };
 
   const filterOnlyID = (selectedBooks) => {
-    let filteredID = selectedBooks.map((a) => a._id);
+    let filteredID = selectedBooks.map(({_id, returnDate}) => ({_id, returnDate}));
     return filteredID;
+  };
+
+  const handleDateChange = (id, date) => {
+    console.log(id, date);
+    const updatedData = selectedBooks.map((obj) => {
+      console.log(obj);
+      if (obj.bookID === id) {
+        console.log(obj.bookID === id);
+          return { ...obj, returnDate: date, pasikeite: "taip" };
+      } else return obj;
+  });
+  console.log("selectedBooks", selectedBooks)
+  setSelectedBooks(updatedData);
   };
 
   return (
@@ -105,7 +120,7 @@ export const BookManagementProvider = (props) => {
         currentUserBooks,
         handleAddBook,
         handleDeleteBook,
-        handleSubmitGiveout,setSelectedBooks, handleSubmitReturn
+        handleSubmitGiveout,setSelectedBooks, handleSubmitReturn, handleDateChange
       }}
     >
       {props.children}

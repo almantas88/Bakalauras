@@ -10,14 +10,14 @@ import Typography from '@mui/material/Typography';
 
 export default function MediaCard(props) {
   return (
-    <Card sx={{ width: 300, height: 350 }}>
+    <Card sx={{ width: 300, height: 350, position: "relative" }}>
       <CardMedia
         component="img"
         height="140"
         image={props.imageHeader}
         alt="green iguana"
       />
-      <CardContent>
+      <CardContent >
         <Typography gutterBottom variant="h5" component="div">
           {props.header}
         </Typography>
@@ -25,8 +25,8 @@ export default function MediaCard(props) {
         {props.description}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button onClick={props.handleChange} size="small">Tvarkyti</Button>
+      <CardActions sx={{position: "absolute", bottom: 0}}>
+        <Button onClick={props.handleChange} size="small" >Tvarkyti</Button>
         {props.download ? <Button size="small"><a href={props.download} download>Atsisiųsti šabloną</a></Button> : null}
       </CardActions>
     </Card>

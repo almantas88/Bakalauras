@@ -10,6 +10,7 @@ router.post("/giveout", async (req, res) => {
   try {
     let { cardID, bookIDarr } = req.body;
 
+
     if (!cardID || !bookIDarr)
       return res.status(400).json({ msg: "Ne visi laukai buvo užpildyti." });
 
@@ -21,13 +22,13 @@ router.post("/giveout", async (req, res) => {
       return res.status(400).json({ msg: "Nėra tokio vartotojo." });
 
     for (const id of bookIDarr) {
-      if (!mongoose.Types.ObjectId.isValid(id)) {
+      if (!mongoose.Types.ObjectId.isValid(id._id)) {
         return res.status(400).json({ msg: "Knyga su netinkamu ID." });
       }
     }
 
     for (const id of bookIDarr) {
-      var foundBook = await Book.findById(id);
+      var foundBook = await Book.findById(id._id);
       if (!foundBook) {
         return res.status(400).json({ msg: "Kažkuri knyga yra nerasta." });
       }
@@ -44,9 +45,10 @@ router.post("/giveout", async (req, res) => {
     console.log("4", "ar rasta vienodu", found);
 
     for (let i = 0; i < bookIDarr.length; i++) {
+      console.log(bookIDarr[i]);
       const updatedUser = await User.findOneAndUpdate(
         { cardID: cardID },
-        { $push: { books: { bookId: bookIDarr[i] } } }
+        { $push: { books: { bookId: bookIDarr[i]._id, returnDate:bookIDarr[i].returnDate } } }
       );
       console.log(bookIDarr[i]);
     }
@@ -74,14 +76,14 @@ router.post("/return", async (req, res) => {
       return res.status(400).json({ msg: "Nėra tokio vartotojo." });
 
     for (const id of bookIDarr) {
-      if (!mongoose.Types.ObjectId.isValid(id)) {
+      if (!mongoose.Types.ObjectId.isValid(id._id)) {
         return res.status(400).json({ msg: "Knyga su netinkamu ID." });
       }
     }
 
     //Patikrinimas ar knyga egzistuoja tarp knygu
     for (const id of bookIDarr) {
-      var foundBook = await Book.findById(id);
+      var foundBook = await Book.findById(id._id);
       if (!foundBook) {
         return res.status(400).json({ msg: "Kažkuri knyga yra nerasta." });
       }
@@ -109,11 +111,10 @@ function findCommonElement(array1, array2) {
        
       // Loop for array2
       for(let j = 0; j < array2.length; j++) {
-           
           // Compare the element of each and
           // every element from both of the
           // arrays
-          if(array1[i] === array2[j]) {
+          if(array1[i] === array2[j]._id) {
            
               // Return if common element found
               return true;

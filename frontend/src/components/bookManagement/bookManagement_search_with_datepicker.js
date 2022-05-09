@@ -193,12 +193,12 @@ export default function Search(props) {
         </Grid>
         <Grid item xs={12} md={12} lg={6}>
           <h3>{props.secondListHeading}</h3>
-          <TableList
+          <TableListWithDatePicker
             ref={childRef}
             allRowsForShowing={props.secondList}
             button={"Pašalinti"}
             handleBookAction={booksManagementContext.handleDeleteBook}
-          ></TableList>
+          ></TableListWithDatePicker>
         </Grid>
       </Grid>
 

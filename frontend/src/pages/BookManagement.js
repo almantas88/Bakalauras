@@ -8,6 +8,7 @@ import UsersSearch from "../components/bookManagement/usersManagement_search";
 import { UsersContext } from "../context/usersContext";
 import { BookManagementContext } from "../context/bookManagementContext";
 import Search from "../components/bookManagement/bookManagement_search";
+import SearchWithDatePicker from "../components/bookManagement/bookManagement_search_with_datepicker";
 import { retrieveCurrentUserBooks } from "../services/booksManagement";
 
 export default function BooksManagement() {
@@ -87,7 +88,7 @@ export default function BooksManagement() {
   if (actionType === "GIVEOUT") {
     actionForChecking = (
       <>
-        <Search
+        <SearchWithDatePicker
           setAction={setActionType}
           firstList={booksManagementContext.filteredBooksList}
           secondList={booksManagementContext.selectedBooks}
@@ -95,7 +96,7 @@ export default function BooksManagement() {
           secondListHeading={"Knygų krepšelis išdavimui:"}
           submit={booksManagementContext.handleSubmitGiveout}
           loading={isLoading}
-        ></Search>
+        ></SearchWithDatePicker>
       </>
       // <BookSearchCheckOut
       //   booksList={booksCartContext.allBookForShowingWithoutUserBooks}

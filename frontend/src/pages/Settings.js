@@ -5,9 +5,12 @@ import Grid from "@mui/material/Grid";
 import Card from "../components/settings/card";
 import imageHeaderGrade from "../public/images/Klase.jpg";
 import imageHeaderExcel from "../public/images/excel.jpg";
+import imageDatePicker from "../public/images/date.jpg";
 import GradesSettings from "../components/settings/gradesSettings";
 import ImportUserCsv from "../components/settings/importUserCsv";
 import ImportBookCsv from "../components/settings/importBookCsv";
+import DatePickerSettings from "../components/settings/datePickerSettings"
+
 import CSVfileUser from "../public/Importavimo-sablonas.csv"
 import CSVfileBook from "../public/Importavimo-sablonas-knygos.csv"
 
@@ -17,6 +20,7 @@ export default function StudentsPage() {
   const [showGradesSettings, setShowGradesSettings] = useState(false);
   const [showImportUserCsvSettings, setShowImportUserCsvSettings] = useState(false);
   const [showImportBookCsvSettings, setShowImportBookCsvSettings] = useState(false);
+  const [showDatePickerSettings, setShowDatePickerSettings] = useState(false);
 
   useEffect(() => {
     getRole();
@@ -43,6 +47,9 @@ export default function StudentsPage() {
   };
   const handleShowBookCsvImport = () => {
     showImportBookCsvSettings ? setShowImportBookCsvSettings(false) : setShowImportBookCsvSettings(true);
+  };
+  const handleShowDatePicker = () => {
+    showDatePickerSettings ? setShowDatePickerSettings(false) : setShowDatePickerSettings(true);
   };
 
   return (
@@ -84,11 +91,20 @@ export default function StudentsPage() {
             download = {CSVfileBook}
           />
         </Grid>
+        <Grid item>
+          <Card
+            header="Numatytoji data knygų išdavimui"
+            description="Datos nustatymas knygų išdavimui. Nustatyta data bus visada parenkama knygų gražinimo laikui."
+            imageHeader={imageDatePicker}
+            handleChange={handleShowDatePicker}
+          />
+        </Grid>
       </Grid>
 
       {showGradesSettings ? <GradesSettings handleChange={handleShowUserAddForm}/> : null}
       {showImportUserCsvSettings ? <ImportUserCsv handleChange={handleShowUserCsvImport}/> : null}
       {showImportBookCsvSettings ? <ImportBookCsv handleChange={handleShowBookCsvImport}/> : null}
+      {showDatePickerSettings ? <DatePickerSettings handleChange={handleShowDatePicker}/> : null}
     </div>
   );
 }

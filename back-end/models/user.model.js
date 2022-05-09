@@ -1,3 +1,5 @@
+
+
 const mongoose = require("mongoose");
 const moment = require("moment");
 const userSchema = new mongoose.Schema({
@@ -16,6 +18,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
       },
       dateGiveOut: { type: Date, default: moment().format() },
+      returnDate: { type: Date, default: moment("07-01", "MM-DD") }
     },
   ],
 });
