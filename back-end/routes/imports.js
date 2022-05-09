@@ -71,4 +71,60 @@ router.post("/userImport", async (req, res) => {
   
 });
 
+router.post("/bookImport", async (req, res) => {
+  const { myFile } = req.files;
+  // console.log(myFile.data.toString("utf-8"));
+  // console.log(myFile);
+
+  if (path.extname(myFile.name) !== ".csv")
+    return res
+      .status(400)
+      .json({ msg: "Netinkamas failo tipas, naudokite .csv" });
+
+  const jsonArray = await csv({
+    delimiter: ";",
+  }).fromString(myFile.data.toString("utf-8"));
+
+  //console.log(jsonArray);
+
+  var arrayToInsert = [];
+  var arrayOfCardID = [];
+  await csv({
+    delimiter: ";",
+  })
+    .fromString(myFile.data.toString("utf-8"))
+    .then((source) => {
+      // Fetching the all data from each row
+      for (var i = 0; i < source.length; i++) {
+        console.log(source[i]);
+
+        //   const foundUser = await User.findOne({ cardID: req.body.initialCardID });
+        // if (foundUser)
+        // return res.status(400).send({ msg: "Vartotojas egzistuoja" });
+
+        var oneRow = {
+          bookID: source[i]["Knygos ID"],
+          title: source[i]["Pavadinimas"],
+          author: source[i]["Autorius"],
+          description: source[i]["Aprašymas"],
+        };
+        arrayToInsert.push(oneRow);
+      }
+      console.log(arrayToInsert);
+    });
+
+
+
+  await Book.insertMany(arrayToInsert)
+    .then(function () {
+      return res.status(200).json({ jsonArray });
+    })
+    .catch(function (error) {
+      console.log(error);
+      return res.status(400).json({ msg: "Klaida importuojant knygas!" });
+    });
+
+  
+});
+
 module.exports = router;
