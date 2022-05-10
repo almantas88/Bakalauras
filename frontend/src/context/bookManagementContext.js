@@ -6,6 +6,7 @@ import {
 } from "../services/booksManagement";
 import { BooksContext } from "../context/booksContext";
 import { UsersContext } from "../context/usersContext";
+import { setDatePicker, getDatePicker } from "../services/datePicker";
 
 export const BookManagementContext = createContext([]);
 
@@ -43,7 +44,7 @@ export const BookManagementProvider = (props) => {
       title: values.title,
       author: values.author,
       description: values.description,
-      returnDate: new Date("2022-01-01")
+      returnDate: getDatePicker()
     };
 
     if (selectedBooks.some((element) => element.bookID === values.bookID)) {

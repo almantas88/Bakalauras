@@ -24,7 +24,8 @@ router.get("/books", auth, async (req, res) => {
         author: element.bookId.author,
         description: element.bookId.description,
         bookID: element.bookId.bookID,
-        dateTaken: moment(element.dateGiveOut).format('YYYY-MM-DD, H:mm'),
+        dateTaken: moment(element.dateGiveOut).format('YYYY-MM-DD'),
+        returnDate: moment(element.returnDate).format('YYYY-MM-DD'),
       });
     });
     // man atroDo čia reikia formuoti duomenis

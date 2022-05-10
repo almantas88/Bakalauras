@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/user.model");
 const Book = require("../models/book.model");
+const moment = require("moment");
 
 //Mokiniu registracija, veliau reiktu gal padaryti ir admino registracija, bet kaip atskira route.
 // Register
@@ -228,16 +229,18 @@ router.post("/oneUserWithAllBooks", async (req, res) => {
       grade: foundUser.grade,
     };
 
-    console.log(foundUser);
+    console.log("rastos knygos: ", foundUser.books);
     var bookArr = [];
     foundUser.books.forEach((element) => {
-      console.log(element);
+      console.log("wtf", element);
       bookArr.push({
         _id: element.bookId._id,
         title: element.bookId.title,
         author: element.bookId.author,
         description: element.bookId.description,
         bookID: element.bookId.bookID,
+        dateGiveOut: moment(element.dateGiveOut).format('YYYY-MM-DD'),
+        returnDate: moment(element.returnDate).format('YYYY-MM-DD')
       });
     });
     // man atroDo čia reikia formuoti duomenis

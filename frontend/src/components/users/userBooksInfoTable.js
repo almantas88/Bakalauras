@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { MessageContext } from "../../context/messageContext";
 import CircularProgress from "@mui/material/CircularProgress";
+import * as moment from 'moment'
 
 export default function UserBooksInfoTable(props) {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +31,8 @@ export default function UserBooksInfoTable(props) {
               <TableRow>
                 <TableCell>KnygosID</TableCell>
                 <TableCell>Knygos pavadinimas</TableCell>
+                <TableCell>Knygos išdavimo data</TableCell>
+                <TableCell>Iki kada gražinti</TableCell>
 
               </TableRow>
             </TableHead>
@@ -44,6 +47,13 @@ export default function UserBooksInfoTable(props) {
                   </TableCell>
                   <TableCell component="th" scope="row">
                     {row.title}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    {row.dateGiveOut}
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    
+                    {moment().isBefore(row.returnDate) ? row.returnDate : <strong className="redText">{row.returnDate}</strong>}
                   </TableCell>
                 </TableRow>
               ))}
