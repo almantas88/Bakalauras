@@ -8,6 +8,7 @@ import { logout } from "../services/authServices";
 import { DataGrid } from "@mui/x-data-grid";
 import { getUserBooks } from "../services/studentsBooksServices";
 import CircularProgress from "@mui/material/CircularProgress";
+import PasswordChange from "../components/studentPage/PasswordChangeBox";
 
 const columns = [
   { field: "bookID", headerName: "ID", width: 110 },
@@ -24,6 +25,7 @@ export default function StudentsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState({});
   const [studentBooks, setStudentBooks] = useState([]);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
 
   useEffect(() => {
     getRole();
@@ -58,6 +60,10 @@ export default function StudentsPage() {
     setIsLoading(false);
   }
 
+  const handleShowPasswordChange = () => {
+    showPasswordChange ? setShowPasswordChange(false) : setShowPasswordChange(true);
+  };
+
   return (
     <div>
       <Button
@@ -66,6 +72,13 @@ export default function StudentsPage() {
         onClick={logout}
       >
         Atsijungti
+      </Button>
+      <Button
+        variant="contained"
+        className="pswChangeStudent-btn"
+        onClick={handleShowPasswordChange}
+      >
+        Slaptažodžio keitimas
       </Button>
       <h1 className="centerHeader">Studento puslapis</h1>
       <h2 className="centerHeader">{`${user.firstName} ${user.lastName}`}</h2>
@@ -81,6 +94,7 @@ export default function StudentsPage() {
           getRowId={(row) => row.bookID}
         />
         </div>)}
+        {showPasswordChange ? <PasswordChange handleChange={handleShowPasswordChange}/> : null}
     </div>
   );
 }
