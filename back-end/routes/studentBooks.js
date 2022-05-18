@@ -3,8 +3,13 @@ const auth = require("../middleware/auth");
 const Book = require("../models/book.model");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
+var validator = require("email-validator");
+var generator = require('generate-password');
 const moment = require("moment");
 moment().format("LT");
+
+
+
 
 router.get("/books", auth, async (req, res) => {
   console.log(req.user);
@@ -66,18 +71,46 @@ router.post("/passwordChange", auth, async (req, res) => {
   const isMatch = await bcrypt.compare(oldPassword, user.password);
   console.log(isMatch);
   if (!isMatch)
-  return res.status(400).send({ msg: "Netinkamas senas slaptažodis." });
+    return res.status(400).send({ msg: "Netinkamas senas slaptažodis." });
 
   try {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(newPassword, salt);
 
-    const existingCardID = await User.updateOne({ _id: req.user }, { password: passwordHash });
+    const existingCardID = await User.updateOne(
+      { _id: req.user },
+      { password: passwordHash }
+    );
     res.status(200).json({ msg: "Slaptažodis sėkmingai atnaujintas." });
   } catch (error) {
     console.log(error);
     res.status(500).json({ msg: error.message });
   }
+});
+
+router.post("/passwordReset", async (req, res) => {
+  console.log(req.body);
+
+  let { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ msg: "Užpildykite el. pašto teksto lauką." });
+  }
+
+  if (!validator.validate(email)) {
+    return res.status(400).json({ msg: "El. paštas yra netinkamas." });
+  }
+
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    return res.status(400).json({ msg: "Toks el. paštas neegzistuoja." });
+  }
+
+  var password = generator.generate({
+    length: 10,
+    numbers: true
+  });
+
+  
 });
 
 module.exports = router;

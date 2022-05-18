@@ -66,6 +66,8 @@ export default function BooksManagement() {
       const user = await getCurrentUser();
       if (!user) window.location = "/unauthorized";
       if (user.role !== "ADMIN") {
+        if(user.role !== "STUDENT")
+        window.location = "/unauthorized";
         window.location = "/student";
       }
     } catch (error) {

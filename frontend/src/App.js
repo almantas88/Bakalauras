@@ -12,6 +12,7 @@ import StudentsPage from "./pages/StudentsPage";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Unauthorized from "./pages/Unauthorized"
+import PasswordReset from "./pages/PasswordReset";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/student" element={<StudentsPage />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/reset" element={<PasswordReset />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

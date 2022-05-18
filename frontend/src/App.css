@@ -49,8 +49,13 @@ html, body{
 #logo-img{
   color: white;
   position: absolute;
-  right: 10px;
+  right: 20px;
   height: 80px;
+  font-size: 50px;
+}
+
+#logo-img :hover{
+  color: rgb(197, 197, 197);
 }
 
 .userTable{
@@ -141,7 +146,7 @@ html, body{
 .notFound.btn{
   display: block;
   font-size: 18px;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 .notFound{
@@ -183,4 +188,17 @@ h3 {
 
 .redText {
   color: red;
+}
+
+.textInputPasswordReset{
+  width: 400px;
+  font-size: 18px;
+  margin: 0 auto;
+  
+}
+
+.notFoundContainer{
+  margin: 50px auto;
+  width: 50%;
+  text-align:center
 }

@@ -11,7 +11,12 @@ export async function getUserBooks() {
   return response;
 }
 
-export async function postPasswordReset(data) {
+export async function postPasswordChange(data) {
   const response = await axios.post(`${apiUrl}/students/passwordChange`, data);
+  return response;
+}
+
+export async function postPasswordReset(data) {
+  const response = await axios.post(`${apiUrl}/students/passwordReset`, data);
   return response;
 }

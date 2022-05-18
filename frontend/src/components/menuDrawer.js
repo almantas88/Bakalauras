@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import { getCurrentUser } from "../services/authServices";
 import { logout } from "../services/authServices";
 import SettingsIcon from '@mui/icons-material/Settings';
+import HomeIcon from '@mui/icons-material/Home';
 
 export default function TemporaryDrawer(props) {
   const [state, setState] = React.useState({
@@ -130,7 +131,7 @@ export default function TemporaryDrawer(props) {
       </React.Fragment>
       
       <Link className="link" to="/users">
-        <h1 id="logo-img">(logo)</h1>
+        <HomeIcon id="logo-img"/>
       </Link>
       {user ? <p className="userName">{getFullNameCapitalized(user.firstName, user.firstName)}</p> : null }
     </div>

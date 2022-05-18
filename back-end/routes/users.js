@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/user.model");
 const Book = require("../models/book.model");
+var validator = require("email-validator");
 const moment = require("moment");
 
 //Mokiniu registracija, veliau reiktu gal padaryti ir admino registracija, bet kaip atskira route.
@@ -29,8 +30,11 @@ router.post("/register", auth, async (req, res) => {
       return res
         .status(400)
         .json({ msg: "Slaptažodis turi būti bent 5 raidžių ilgio." });
-    if (password && passwordCheck && password !== passwordCheck)
-      return res.status(400).json({ msg: "Slaptažodžiai nesutampa." });
+
+    if (password) {
+      if (password !== passwordCheck)
+        return res.status(400).json({ msg: "Slaptažodžiai nesutampa." });
+    }
 
     const existingCardID = await User.findOne({ cardID: cardID });
     if (existingCardID)
@@ -39,6 +43,9 @@ router.post("/register", auth, async (req, res) => {
         .json({ msg: "Vartotojas su tokiu kortelės ID jau egzistuoja." });
 
     if (email) {
+      if (!validator.validate(email)) {
+        return res.status(400).json({ msg: "El. paštas yra netinkamas." });
+      }
       const existingUser = await User.findOne({ email: email });
       if (existingUser)
         return res
@@ -102,7 +109,8 @@ router.post("/login", async (req, res) => {
         role: user.role,
         grade: user.grade,
       },
-      process.env.JWT_SECRET, { expiresIn: '8h' }
+      process.env.JWT_SECRET,
+      { expiresIn: "8h" }
     );
     res.status(200).send({
       token,
@@ -232,15 +240,14 @@ router.post("/oneUserWithAllBooks", async (req, res) => {
     console.log("rastos knygos: ", foundUser.books);
     var bookArr = [];
     foundUser.books.forEach((element) => {
-      console.log("wtf", element);
       bookArr.push({
         _id: element.bookId._id,
         title: element.bookId.title,
         author: element.bookId.author,
         description: element.bookId.description,
         bookID: element.bookId.bookID,
-        dateGiveOut: moment(element.dateGiveOut).format('YYYY-MM-DD'),
-        returnDate: moment(element.returnDate).format('YYYY-MM-DD')
+        dateGiveOut: moment(element.dateGiveOut).format("YYYY-MM-DD"),
+        returnDate: moment(element.returnDate).format("YYYY-MM-DD"),
       });
     });
     // man atroDo čia reikia formuoti duomenis
@@ -276,6 +283,9 @@ router.put("/updateUser", auth, async (req, res) => {
     if (!foundUser)
       return res.status(400).send({ msg: "Vartotojas neegzistuoja" });
 
+    if (!validator.validate(email)) {
+      return res.status(400).json({ msg: "El. paštas yra netinkamas." });
+    }
     var newUserInfo;
     if (foundUser.email === email) {
       newUserInfo = {
@@ -301,7 +311,7 @@ router.put("/updateUser", auth, async (req, res) => {
     }
 
     //Patikrina ar išviso yra slaptažodis, nes gali jo ir neupdatinti
-    if (password && passwordCheck) {
+    if (password) {
       if (password !== passwordCheck) {
         return res.status(400).json({ msg: "Slaptažodžiai nesutampa." });
       }

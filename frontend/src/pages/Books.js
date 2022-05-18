@@ -28,13 +28,14 @@ export default function Books() {
       const user = await getCurrentUser();
       if (!user) window.location = "/unauthorized";
       if (user.role !== "ADMIN") {
+        if(user.role !== "STUDENT")
+        window.location = "/unauthorized";
         window.location = "/student";
       }
     } catch (error) {
       window.location = "/unauthorized";
     }
   }
-
   async function returnAllBooks() {
     setIsLoading(true);
     try {

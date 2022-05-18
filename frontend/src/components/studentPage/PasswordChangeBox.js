@@ -4,7 +4,7 @@ import Container from "@mui/material/Container";
 import CloseIcon from "@mui/icons-material/Close";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { postPasswordReset } from "../../services/studentsBooksServices"
+import { postPasswordChange } from "../../services/studentsBooksServices"
 import MenuItem from "@mui/material/MenuItem";
 import { MessageContext } from "../../context/messageContext";
 
@@ -31,7 +31,7 @@ export default function PasswordChange(props) {
   const handleSubmit = async () => {
 
     try {
-      const { data } = await postPasswordReset(values);
+      const { data } = await postPasswordChange(values);
       messageContext.handleMessageShow(
         "Slaptažodis atnaujintas!",
         "success"
