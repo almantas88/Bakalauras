@@ -83,11 +83,11 @@ export default function TemporaryDrawer(props) {
 
 
         <Link className="link" to="/bookmanagement">
-          <ListItem button key={"Knygų išdavimas 2"}>
+          <ListItem button key={"Knygų išdavimas"}>
             <ListItemIcon>
               <AutoStoriesIcon />
             </ListItemIcon>
-            <ListItemText primary={"Knygų išdavimas 2"} />
+            <ListItemText primary={"Knygų išdavimas"} />
           </ListItem>
         </Link>
 

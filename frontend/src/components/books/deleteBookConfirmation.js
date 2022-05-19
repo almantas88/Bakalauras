@@ -30,7 +30,7 @@ export default function DeleteBook(props) {
         className="addUserForm"
         sx={{
           width: 500,
-          height: 320,
+          height: 370,
           marginTop: "120px",
           backgroundColor: "#F5F5F5",
           borderRadius: "1%",
