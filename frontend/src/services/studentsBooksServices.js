@@ -20,3 +20,8 @@ export async function postPasswordReset(data) {
   const response = await axios.post(`${apiUrl}/students/passwordReset`, data);
   return response;
 }
+
+export async function getAllBookDelays() {
+  const response = await axios.get(`${apiUrl}/students/bookDelays`);
+  return response;
+}

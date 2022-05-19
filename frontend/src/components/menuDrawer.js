@@ -17,6 +17,7 @@ import { getCurrentUser } from "../services/authServices";
 import { logout } from "../services/authServices";
 import SettingsIcon from '@mui/icons-material/Settings';
 import HomeIcon from '@mui/icons-material/Home';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
 export default function TemporaryDrawer(props) {
   const [state, setState] = React.useState({
@@ -87,6 +88,15 @@ export default function TemporaryDrawer(props) {
               <AutoStoriesIcon />
             </ListItemIcon>
             <ListItemText primary={"Knygų išdavimas 2"} />
+          </ListItem>
+        </Link>
+
+        <Link className="link" to="/bookDelay">
+          <ListItem button key={"Knygų gražinimo laikas"}>
+            <ListItemIcon>
+              <AccessTimeIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Gražinimo laikas"} />
           </ListItem>
         </Link>
 

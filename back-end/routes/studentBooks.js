@@ -140,8 +140,10 @@ router.post("/passwordReset", async (req, res) => {
   }
 });
 
-router.get("/bookDelays", async (req, res) => {
-  const allUsers = await User.find({ role: { $ne: "ADMIN" } });
+router.get("/bookDelays", auth, async (req, res) => {
+  const allUsers = await User.find({ role: { $ne: "ADMIN" } }).populate(
+    "books.bookId"
+  );
   //console.log(allUsers);
   var delayedBooksUsers = [];
 
@@ -155,25 +157,24 @@ router.get("/bookDelays", async (req, res) => {
   allUsers.forEach((item) => {
     item.books.forEach((element) => {
       console.log(element);
-
-      //console.log(daysRemaining(element.returnDate));
-
       if (daysRemaining(element.returnDate) <= 14) {
         delayedBooksUsers.push({
-          user: {
             email: item.email,
             firstName: item.firstName,
             lastName: item.lastName,
             cardID: item.cardID,
             grade: item.grade,
-          },
-          book: element,
+            title: element.bookId.title,
+            bookID: element.bookId.bookID,
+            dateGiveOut: moment(element.dateGiveOut).format("YYYY-MM-DD"),
+            returnDate:moment(element.returnDate).format("YYYY-MM-DD")
+          
         });
       }
     });
   });
 
-  res.status(200).json({ delayedBooksUsers : delayedBooksUsers.length });
+  res.status(200).json({ delayedBooksUsers });
 });
 
 module.exports = router;
