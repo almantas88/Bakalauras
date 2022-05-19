@@ -1,15 +1,16 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const seed = require('./seed');
-const seedbook = require('./seedBooks');
-const createAdmin = require('./createAdmin');
+const seed = require("./seed");
+const seedbook = require("./seedBooks");
+const createAdmin = require("./createAdmin");
 const path = require("path");
-var bodyParser = require('body-parser')
-const fileUpload = require('express-fileupload');
+var bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
+const nodemailer = require("nodemailer");
 
 app = express();
-app.use(fileUpload({createParentPath: true}));
+app.use(fileUpload({ createParentPath: true }));
 app.use(express.json());
 
 app.use(bodyParser.json());
@@ -17,7 +18,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors());
 require("dotenv").config();
-
 
 const connectDB = async () => {
   try {
@@ -36,6 +36,7 @@ connectDB();
 //createAdmin();
 //seed(50);
 //seedbook(1000);
+
 app.use("/api/users", require("./routes/users"));
 app.use("/api/books", require("./routes/books"));
 app.use("/api/booksmanagement", require("./routes/booksManagement"));
@@ -46,11 +47,9 @@ app.use("/api/imports", require("./routes/imports"));
 // deployment
 
 const __dirname1 = path.resolve();
-if(process.env.NODE_ENV=== 'production'){
-
-
+if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/build")));
-  
+
   console.log(path.join(__dirname, "../frontend/build"));
 
   console.log(path.join(__dirname, "../frontend", "build", "index.html"));
@@ -60,12 +59,8 @@ if(process.env.NODE_ENV=== 'production'){
 
     const index = path.join(__dirname, "../frontend", "build", "index.html");
     res.sendFile(index);
-  })
-
-
-}
-else{
-
+  });
+} else {
 }
 
 // deployment

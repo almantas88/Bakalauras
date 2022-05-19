@@ -21,11 +21,9 @@ export default function PasswordReset() {
 
   const handleSubmit = async () => {
     try {
-      const { data } = await postPasswordReset({email});
-      messageContext.handleMessageShow(
-        "Naujas slaptažodis išsiūstas į el. paštą!",
-        "success"
-      );
+      const { data } = await postPasswordReset({ email });
+      console.log(data);
+      messageContext.handleMessageShow(data.msg, "success");
     } catch (error) {
       console.log(error.response.data);
       messageContext.handleMessageShow(error.response.data.msg, "error");
@@ -53,6 +51,8 @@ export default function PasswordReset() {
       >
         Nustatyti iš naujo
       </Button>
+
+      <Link to="/">Pagrindinis puslapis</Link>
     </div>
   );
 }

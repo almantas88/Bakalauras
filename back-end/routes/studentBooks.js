@@ -4,12 +4,10 @@ const Book = require("../models/book.model");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 var validator = require("email-validator");
-var generator = require('generate-password');
+var generator = require("generate-password");
+const nodemailer = require("nodemailer");
 const moment = require("moment");
 moment().format("LT");
-
-
-
 
 router.get("/books", auth, async (req, res) => {
   console.log(req.user);
@@ -105,12 +103,77 @@ router.post("/passwordReset", async (req, res) => {
     return res.status(400).json({ msg: "Toks el. paštas neegzistuoja." });
   }
 
-  var password = generator.generate({
-    length: 10,
-    numbers: true
+  try {
+    var password = generator.generate({
+      length: 8,
+      numbers: true,
+    });
+
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    await User.updateOne({ email: email }, { password: passwordHash });
+
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "ga.almantas@gmail.com",
+        pass: "Renkudepozita88*",
+      },
+    });
+
+    let details = {
+      from: "ga.almantas@gmail.com",
+      to: "almantas88@gmail.com",
+      subject: "Slaptažodžio atstatymas",
+      html: `
+      <h1>Bibliotekos valdymo sistema<h1/>
+      <p>Jūsų naujas slaptažodis yra: <strong>${password}<strong/><p/>`,
+    };
+
+    transporter.sendMail(details);
+    res
+      .status(200)
+      .json({ msg: `Naujas slaptažodis išsiųstas į ${email} el. paštą.` });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.get("/bookDelays", async (req, res) => {
+  const allUsers = await User.find({ role: { $ne: "ADMIN" } });
+  //console.log(allUsers);
+  var delayedBooksUsers = [];
+
+  function daysRemaining(eventdate) {
+    var eventdate = moment(eventdate);
+    var todaysdate = moment();
+    return eventdate.diff(todaysdate, "days");
+  }
+  //alert(daysRemaining());
+
+  allUsers.forEach((item) => {
+    item.books.forEach((element) => {
+      console.log(element);
+
+      //console.log(daysRemaining(element.returnDate));
+
+      if (daysRemaining(element.returnDate) <= 14) {
+        delayedBooksUsers.push({
+          user: {
+            email: item.email,
+            firstName: item.firstName,
+            lastName: item.lastName,
+            cardID: item.cardID,
+            grade: item.grade,
+          },
+          book: element,
+        });
+      }
+    });
   });
 
-  
+  res.status(200).json({ delayedBooksUsers : delayedBooksUsers.length });
 });
 
 module.exports = router;
